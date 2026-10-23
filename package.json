@@ -22,7 +22,7 @@
     "@astrojs/rss": "4.0.19",
     "@astrojs/sitemap": "3.7.4",
     "accessible-astro-components": "5.8.0",
-    "astro": "7.3.8",
+    "astro": "7.4.0",
     "pagefind": "1.5.2"
   },
   "devDependencies": {
