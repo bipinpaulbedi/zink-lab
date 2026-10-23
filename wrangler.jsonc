@@ -6,10 +6,10 @@
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page",
-    "html_handling": "auto-trailing-slash",
+    "html_handling": "auto-trailing-slash"
   },
   // Production uses only the custom domain. Previews use workers.dev URLs with X-Robots-Tag: noindex.
   "routes": [{ "pattern": "bipinpaulbedi.com", "custom_domain": true }],
   "workers_dev": false,
-  "preview_urls": true,
+  "preview_urls": true
 }
