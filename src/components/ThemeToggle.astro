@@ -1,0 +1,57 @@
+<button
+  class="theme-toggle"
+  id="theme-toggle"
+  type="button"
+  aria-pressed="false"
+  hidden
+>
+  Mode
+</button>
+<script>
+  const b = document.querySelector<HTMLButtonElement>('#theme-toggle')!;
+  const dark = () =>
+    getComputedStyle(document.documentElement).colorScheme === 'dark' ||
+    (!document.documentElement.dataset.theme &&
+      matchMedia('(prefers-color-scheme:dark)').matches);
+  const sync = () => b.setAttribute('aria-pressed', String(dark()));
+  sync();
+  b.hidden = false;
+  matchMedia('(prefers-color-scheme:dark)').addEventListener('change', sync);
+  b.onclick = () => {
+    const t = dark() ? 'light' : 'dark';
+    document.documentElement.dataset.theme = t;
+    try {
+      localStorage.setItem('theme', t);
+    } catch {}
+    sync();
+  };
+</script>
+
+<style>
+  @import '../styles/layers.css';
+
+  @layer components {
+    .theme-toggle {
+      margin-inline-start: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-height: 40px;
+      border-color: var(--muted);
+      border-radius: var(--radius-pill);
+      --button-font-size: 0.75rem;
+      padding-inline: var(--space-2);
+    }
+    .theme-toggle::before {
+      content: '';
+      width: 0.8rem;
+      height: 0.8rem;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+    }
+    .theme-toggle[aria-pressed='true'] {
+      background: var(--panel);
+    }
+  }
+</style>

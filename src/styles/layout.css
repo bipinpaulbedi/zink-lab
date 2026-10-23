@@ -1,0 +1,31 @@
+.l-shell {
+  width: min(var(--layout-width), calc(100% - var(--layout-gutter)));
+  margin-inline: auto;
+}
+.l-inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+.l-main {
+  min-height: 55vh;
+  padding-block-end: var(--space-2xl);
+}
+.l-main > :where(section) {
+  margin-block: var(--section-space);
+}
+.l-entry-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 2), minmax(0, 1fr));
+  gap: 0 var(--grid-gap, var(--space-5));
+}
+
+@media (max-width: 560px) {
+  .l-entry-grid {
+    grid-template-columns: 1fr;
+  }
+}

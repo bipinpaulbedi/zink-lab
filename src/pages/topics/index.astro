@@ -1,0 +1,41 @@
+---
+import '../../styles/entry-card.css';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPortal } from '../../lib/portal';
+const topics = await getCollection('topics');
+const portal = await getPortal();
+---
+
+<BaseLayout
+  title="Topic map"
+  description="Follow a topic across Notes, Experiments, Concepts, Miscellaneous, and reference material."
+>
+  <header class="page-intro">
+    <p class="eyebrow">Follow</p>
+    <h1>Topic map</h1>
+    <p class="lede">
+      Ideas connect across sections. Start with a question that interests you.
+    </p>
+  </header>
+  <div class="l-entry-grid">
+    {topics.map((t) => {
+      const count = portal.filter((e) =>
+        e.data.topics.some((x) => x.id === t.id),
+      ).length;
+      return (
+        <section class="entry-card">
+          <h2>
+            <a class="entry-card__link" href={`/topics/${t.id}/`}>
+              {t.data.title}
+            </a>
+          </h2>
+          <p class="entry-card__description">{t.data.description}</p>
+          <p class="entry-card__date u-small">
+            {count} {count === 1 ? 'entry' : 'entries'}
+          </p>
+        </section>
+      );
+    })}
+  </div>
+</BaseLayout>

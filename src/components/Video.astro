@@ -1,0 +1,47 @@
+---
+interface Props {
+  id: string;
+  title: string;
+}
+const { id, title } = Astro.props;
+---
+
+<div class="video" data-video={id} data-title={title}>
+  <button type="button" hidden>
+    Play video: {title} (connects to YouTube)
+  </button>
+  <a href={`https://www.youtube.com/watch?v=${id}`}>Watch {title} on YouTube</a>
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-video]').forEach((v) => {
+    const b = v.querySelector('button')!;
+    b.hidden = false;
+    v.querySelector('a')!.hidden = true;
+    b.onclick = () => {
+      const f = document.createElement('iframe');
+      f.src =
+        'https://www.youtube-nocookie.com/embed/' +
+        v.dataset.video +
+        '?autoplay=1';
+      f.title = v.dataset.title!;
+      f.allow = 'autoplay; fullscreen';
+      f.allowFullscreen = true;
+      v.replaceChildren(f);
+    };
+  });
+</script>
+
+<style>
+  @import '../styles/layers.css';
+
+  @layer components {
+    .video {
+      margin-block: var(--space-4);
+    }
+    .video :global(iframe) {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+    }
+  }
+</style>

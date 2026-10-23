@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bipinpaulbedi.com/sitemap-index.xml

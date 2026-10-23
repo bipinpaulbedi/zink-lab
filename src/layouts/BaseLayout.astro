@@ -1,0 +1,248 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { SECTIONS, SOCIAL_PROFILES } from '../site';
+import '../styles/global.css';
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string | undefined;
+  ogImage?: string | undefined;
+  jsonLd?: Record<string, unknown> | undefined;
+  noindex?: boolean | undefined;
+}
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead {...Astro.props} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <header class="site-header l-shell">
+      <div class="site-header__masthead">
+        <a class="wordmark" href="/" aria-label="bipin paul bedi home">
+          bipin<span class="wordmark__light"> paul </span>
+          <span class="wordmark__light wordmark__dot" aria-hidden="true">
+            bedi
+          </span>
+        </a>
+        <span class="site-header__note">thoughts, stories and ideas; in progress.</span>
+        <ThemeToggle />
+      </div>
+      <nav class="site-header__nav" aria-label="Primary">
+        <ul class="l-inline-list site-header__list">
+          {Object.values(SECTIONS).map((s) => (
+            <li>
+              <a
+                class="site-header__link"
+                href={`/${s.path}/`}
+                aria-current={
+                  path.startsWith(`/${s.path}/`) ? 'page' : undefined
+                }
+              >
+                {s.label}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a
+              class="site-header__link"
+              href="/topics/"
+              aria-current={path.startsWith('/topics/') ? 'page' : undefined}
+            >
+              Topics
+            </a>
+          </li>
+          <li class="site-header__search">
+            <a
+              class="site-header__link"
+              href="/search/"
+              aria-current={path === '/search/' ? 'page' : undefined}
+            >
+              Search <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main id="main" class="l-main l-shell" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="site-footer l-shell">
+      <p class="site-footer__identity">
+        <strong>Bipin Paul Bedi.</strong> thoughts, stories and ideas; in progress.
+      </p>
+      <nav aria-label="Footer">
+        <ul class="l-inline-list">
+          <li>
+            <a href="/recent/">Recently updated</a>
+          </li>
+          <li>
+            <a href="/rss.xml">RSS feed</a>
+          </li>
+          <li>
+            <a href="/topics/">Topic map</a>
+          </li>
+          <li>
+            <a
+              class="site-footer__social"
+              href={SOCIAL_PROFILES.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter (X) profile (opens in a new tab)"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.835L0 1.154h7.594l5.243 6.932 6.064-6.933Zm-1.29 19.49h2.039L6.487 3.24H4.3l13.31 17.403Z"></path>
+              </svg>
+              Twitter (X) <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="site-footer__social"
+              href={SOCIAL_PROFILES.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn profile (opens in a new tab)"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.049c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286ZM5.337 7.433a2.063 2.063 0 1 1 0-4.126 2.063 2.063 0 0 1 0 4.126ZM7.119 20.452H3.555V9h3.564v11.452ZM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003Z"></path>
+              </svg>
+              LinkedIn <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <p class="site-footer__note u-small">Built with care. Grown over time.</p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  @import '../styles/layers.css';
+
+  @layer components {
+    .site-header__masthead {
+      display: flex;
+      align-items: center;
+      gap: var(--space-m);
+      padding-block: var(--space-4) var(--space-3);
+    }
+    .wordmark {
+      font: 700 2rem/1 var(--font-ui);
+      text-decoration: none;
+      letter-spacing: -0.08em;
+    }
+    .wordmark__light {
+      font-weight: 400;
+    }
+    .wordmark__dot {
+      color: var(--accent);
+    }
+    .site-header__note {
+      color: var(--muted);
+      font: 0.8rem var(--font-ui);
+      padding-inline-start: var(--space-m);
+      border-inline-start: 1px solid var(--line);
+    }
+    .site-header__nav {
+      border-block-end: 1px solid var(--line);
+      padding-block: 0.25rem 0.75rem;
+      font-size: 0.85rem;
+    }
+    .site-header__link {
+      text-decoration: none;
+      display: inline-block;
+      padding: 0.6rem 0;
+      position: relative;
+    }
+    .site-header__link[aria-current] {
+      color: var(--accent);
+    }
+    .site-header__link[aria-current]::after {
+      content: '';
+      position: absolute;
+      inset: auto 0 -0.8rem;
+      height: 2px;
+      background: var(--accent);
+    }
+    .site-header__search {
+      margin-inline-start: auto;
+    }
+    .skip-link {
+      position: fixed;
+      inset-block-start: var(--space-1);
+      inset-inline-start: var(--space-2);
+      transform: translateY(-200%);
+      padding: 0.6rem var(--space-2);
+      background: var(--surface);
+      z-index: 10;
+    }
+    .skip-link:focus {
+      transform: none;
+    }
+    .site-footer {
+      border-block-start: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2) var(--space-4);
+      padding-block: var(--space-4);
+      font-size: 0.8rem;
+    }
+    .site-footer__note {
+      flex-basis: 100%;
+      margin: 0;
+    }
+    .site-footer__identity {
+      font-family: var(--font-ui);
+    }
+    .site-footer__social {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      min-block-size: 44px;
+    }
+
+    @media (max-width: 850px) {
+      .site-header__note {
+        display: none;
+      }
+    }
+    @media (max-width: 560px) {
+      .site-header__masthead {
+        gap: 0.75rem;
+      }
+      .site-header__link[aria-current]::after {
+        inset-block-end: 0;
+      }
+      .site-header__list {
+        gap: var(--space-1) var(--space-2);
+      }
+      .site-header__search {
+        margin-inline-start: 0;
+      }
+    }
+  }
+</style>

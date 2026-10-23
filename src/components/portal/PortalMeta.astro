@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import GrowthStage from './GrowthStage.astro';
+import { lastUpdated, type Entry } from '../../lib/portal';
+import { AUTHOR_NAME } from '../../site';
+interface Props {
+  entry: Entry;
+  topics: CollectionEntry<'topics'>[];
+}
+const { entry, topics } = Astro.props;
+const date = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<div class="portal-meta">
+  <p class="l-inline-list">
+    <GrowthStage stage={entry.data.stage} filter />
+    <span>By {AUTHOR_NAME}</span>
+    {entry.data.draft && <strong>Draft preview</strong>}
+  </p>
+  <p>
+    Created{' '}
+    <time datetime={date(entry.data.created)}>{date(entry.data.created)}</time>{' '}
+    · Updated{' '}
+    <time datetime={date(lastUpdated(entry))}>{date(lastUpdated(entry))}</time>
+  </p>
+  <ul class="l-inline-list">
+    {topics.map((t) => (
+      <li>
+        <a href={`/topics/${t.id}/`} data-pagefind-filter="topic">
+          {t.data.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  @import '../../styles/layers.css';
+
+  @layer components {
+    .portal-meta {
+      font: 0.75rem/var(--leading-body) var(--font-ui);
+      color: var(--muted);
+    }
+  }
+</style>

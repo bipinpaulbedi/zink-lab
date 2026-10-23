@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+Astro.csp?.insertScriptResource("'wasm-unsafe-eval'");
+Astro.csp?.insertDirective("worker-src 'self' blob:");
+Astro.csp?.insertDirective("img-src 'self' data:");
+---
+
+<BaseLayout
+  title="Search"
+  description="Search the portal and narrow the results by section, growth stage, or topic."
+  noindex
+>
+  <link
+    slot="head"
+    rel="stylesheet"
+    href="/pagefind/pagefind-component-ui.css"
+  />
+  <header class="page-intro">
+    <p class="eyebrow">Find a connection</p>
+    <h1>Search the portal</h1>
+    <p class="lede">A phrase, a question, or the beginning of an idea.</p>
+  </header>
+  <pagefind-config bundle-path="/pagefind/" preload=""></pagefind-config>
+  <pagefind-input></pagefind-input>
+  <div class="search-filters">
+    <pagefind-filter-dropdown
+      filter="section"
+      label="Section"
+    ></pagefind-filter-dropdown>
+    <pagefind-filter-dropdown
+      filter="stage"
+      label="Growth stage"
+    ></pagefind-filter-dropdown>
+    <pagefind-filter-dropdown
+      filter="topic"
+      label="Topic"
+    ></pagefind-filter-dropdown>
+  </div>
+  <pagefind-summary></pagefind-summary>
+  <pagefind-results></pagefind-results>
+  <noscript>
+    <p>
+      Search requires JavaScript. <a href="/topics/">Browse the topic map</a> to
+      explore every entry.
+    </p>
+  </noscript>
+  <script>
+    // Pagefind 1.5.2 renders combobox text but omits its accessible name.
+    customElements.whenDefined('pagefind-filter-dropdown').then(() => {
+      document
+        .querySelectorAll('pagefind-filter-dropdown')
+        .forEach((filter) => {
+          const trigger = filter.querySelector('[role="combobox"]')!;
+          const label = trigger.querySelector('.pf-dropdown-trigger-label')!;
+          label.id = `${trigger.id}-label`;
+          trigger.setAttribute('aria-labelledby', label.id);
+        });
+    });
+  </script>
+  <script is:inline src="/pagefind/pagefind-component-ui.js" defer></script>
+</BaseLayout>
+<style is:global>
+  html:root {
+    --pf-text: var(--text);
+    --pf-text-secondary: var(--muted);
+    --pf-text-muted: var(--muted);
+    --pf-background: var(--surface);
+    --pf-border: var(--line);
+    --pf-border-focus: var(--accent);
+    --pf-skeleton: var(--surface);
+    --pf-skeleton-shine: var(--muted);
+    --pf-hover: var(--surface);
+    --pf-mark: var(--accent);
+    --pf-outline-focus: var(--accent);
+    --pf-error-bg: var(--surface);
+    --pf-error-border: var(--accent);
+    --pf-error-text: var(--text);
+    --pf-error-text-secondary: var(--muted);
+    --pf-shadow-sm: none;
+    --pf-shadow-md: none;
+    --pf-shadow-lg: none;
+    --pf-input-height: 48px;
+    --pf-result-title-font-size: 20px;
+    --pf-result-excerpt-font-size: 16px;
+  }
+  /* Pagefind's `all: initial` resets the inherited color scheme. */
+  main
+    :is(
+      pagefind-input,
+      pagefind-filter-dropdown,
+      pagefind-summary,
+      pagefind-results
+    ) {
+    color-scheme: inherit;
+  }
+</style>
+
+<style>
+  @import '../styles/layers.css';
+
+  @layer components {
+    .search-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-block: var(--space-3);
+    }
+  }
+</style>

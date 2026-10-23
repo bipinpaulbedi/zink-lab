@@ -1,0 +1,5 @@
+/* The component package imports an unlayered `button { font: inherit }` reset.
+   Keep this adapter unlayered; a layered rule cannot override that reset. */
+button:not(.badge) {
+  font: var(--button-font-size, 0.85rem)/var(--leading-body) var(--font-ui);
+}

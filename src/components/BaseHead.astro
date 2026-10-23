@@ -1,0 +1,50 @@
+---
+import ThemeInit from './ThemeInit.astro';
+import { showDrafts } from '../lib/portal';
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string | undefined;
+  ogImage?: string | undefined;
+  jsonLd?: Record<string, unknown> | undefined;
+  noindex?: boolean | undefined;
+}
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/og-default.png',
+  jsonLd,
+  noindex = false,
+} = Astro.props;
+const url = canonical ?? new URL(Astro.url.pathname, Astro.site).href;
+const image = new URL(ogImage, Astro.site).href;
+const structured = jsonLd ? { ...jsonLd, image } : undefined;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title === 'bipin paul bedi' ? title : `${title} · bipin paul bedi`}</title>
+<meta name="description" content={description} />
+{(showDrafts || noindex) && <meta name="robots" content="noindex, nofollow" />}
+<link rel="canonical" href={url} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="bipin paul bedi RSS"
+  href="/rss.xml"
+/>
+<meta property="og:site_name" content="bipin paul bedi" />
+<meta property="og:type" content={jsonLd ? 'article' : 'website'} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={url} />
+<meta property="og:image" content={image} />
+{structured && (
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(structured).replace(/</g, '\u003c')}
+  />
+)}
+<ThemeInit />

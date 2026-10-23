@@ -1,0 +1,11 @@
+/* Project layer order is independent of component import order. */
+@import './layers.css';
+
+@import 'accessible-astro-components/styles/space.css' layer(tokens);
+@import 'accessible-astro-components/styles/font.css' layer(tokens);
+@import './tokens.css' layer(tokens);
+@import './base.css';
+@import './layout.css' layer(layout);
+@import './patterns.css' layer(components);
+@import './utilities.css' layer(utilities);
+@import './vendor.css';

@@ -1,0 +1,16 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import EntryIndex from '../../components/portal/EntryIndex.astro';
+import { byUpdated, getPortal } from '../../lib/portal';
+export const getStaticPaths = (async ({ paginate }) =>
+  paginate((await getPortal()).sort(byUpdated), {
+    pageSize: 20,
+  })) satisfies GetStaticPaths;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+---
+
+<EntryIndex
+  title="Recently updated"
+  description="New notes and significant revisions, from every corner of the portal."
+  page={Astro.props.page}
+/>

@@ -1,0 +1,51 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { entryUrl, getPortal, type Entry } from '../../lib/portal';
+export async function getStaticPaths() {
+  const portal = await getPortal();
+  return (await getCollection('series')).map((series) => ({
+    params: { id: series.id },
+    props: {
+      series,
+      entries: portal
+        .filter((e) => e.data.series?.id.id === series.id)
+        .sort((a, b) => a.data.series!.part - b.data.series!.part),
+    },
+  }));
+}
+interface Props {
+  series: CollectionEntry<'series'>;
+  entries: Entry[];
+}
+const { series, entries } = Astro.props;
+---
+
+<BaseLayout title={series.data.title} description={series.data.description}>
+  <header class="page-intro">
+    <p class="eyebrow">A connected sequence</p>
+    <h1>{series.data.title}</h1>
+    <p class="lede">{series.data.description}</p>
+  </header>
+  <ol class="series-list">
+    {entries.map((e) => (
+      <li class="series-list__item" value={e.data.series!.part}>
+        <a href={entryUrl(e)}>{e.data.title}</a>
+        <p>{e.data.description}</p>
+      </li>
+    ))}
+  </ol>
+  {!entries.length && (
+    <p class="empty-state">The first part is still taking shape.</p>
+  )}
+</BaseLayout>
+
+<style>
+  @import '../../styles/layers.css';
+
+  @layer components {
+    .series-list__item {
+      padding-block: var(--space-2);
+    }
+  }
+</style>

@@ -1,0 +1,25 @@
+.u-small,
+.u-muted {
+  color: var(--muted);
+}
+.u-small {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+}
+.u-capitalize {
+  text-transform: capitalize;
+}
+
+/* Visibility and motion preferences must also override unlayered vendor CSS. */
+[hidden] {
+  display: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

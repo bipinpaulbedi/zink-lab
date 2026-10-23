@@ -1,0 +1,61 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 4 * * 1' # Mondays: external links and live headers
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  WRANGLER_SEND_METRICS: 'false' # wrangler dev runs locally; CI has no Cloudflare token
+jobs:
+  verify:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npm run check # astro check + prettier
+      - run: npm run test:content
+      - run: npm run build # astro build + pagefind
+      - run: npm run test:html # html-validate
+      - run: npm run test:links
+        env:
+          LIVE_SITE_URL: ${{ vars.SITE_URL }}
+      - name: Internal links and anchors
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: >-
+            --offline --include-fragments --index-files index.html
+            --root-dir ${{ github.workspace }}/dist 'dist/**/*.html'
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e # with wrangler dev: axe in both themes, budgets, privacy, CSP, headers, redirects, 404
+      - run: npm run test:perf # Lighthouse mobile with wrangler dev; all categories >= 0.95
+  weekly:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: External links in entries
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: "'src/content/**/*.md'"
+      - run: npx playwright install --with-deps chromium
+      - if: vars.SITE_URL != ''
+        run: npx playwright test tests/live.spec.ts # security headers on the confirmed production domain
+        env:
+          BASE_URL: ${{ vars.SITE_URL }}

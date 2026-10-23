@@ -1,0 +1,18 @@
+<script>
+  document.querySelectorAll('pre').forEach((p) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = 'Copy code';
+    b.onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(
+          p.querySelector('code')?.textContent || '',
+        );
+        b.textContent = 'Copied';
+      } catch {
+        b.textContent = 'Select code to copy';
+      }
+    };
+    p.before(b);
+  });
+</script>

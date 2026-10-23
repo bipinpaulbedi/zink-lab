@@ -1,0 +1,23 @@
+---
+import { entryUrl, type Entry } from '../../lib/portal';
+interface Props {
+  title: string;
+  entries: Entry[];
+}
+const { title, entries } = Astro.props;
+---
+
+<section>
+  <h2>{title}</h2>
+  {entries.length ? (
+    <ul>
+      {entries.map((e) => (
+        <li>
+          <a href={entryUrl(e)}>{e.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="u-muted">No connections yet. There is room to grow.</p>
+  )}
+</section>

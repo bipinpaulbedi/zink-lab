@@ -1,0 +1,340 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EntryCard from '../components/portal/EntryCard.astro';
+import { byUpdated, entryUrl, getPortal, lastUpdated } from '../lib/portal';
+import { SECTIONS } from '../site';
+const portal = (await getPortal()).sort(byUpdated);
+const latest = portal[0];
+const topics = await getCollection('topics');
+const evergreens = portal
+  .filter((e) => e.data.stage === 'accepted')
+  .slice(0, 3);
+---
+
+<BaseLayout title="Bipin Paul Bedi" description="thoughts, stories and ideas; in progress.">
+  <header class="hero">
+    <p class="eyebrow hero__eyebrow">A second brain · Always growing</p>
+    <h1 class="hero__title">
+      Curiosity sparks ideas
+      <br />
+      <em class="hero__emphasis">Understanding grows.</em>
+    </h1>
+    <div class="hero__copy">
+      <p class="lede hero__lede">
+        Notes, experiments, and concepts for better understand. A place to think
+        in public, follow connections, and revisit what we know.
+      </p>
+      <a class="text-link" href="#explore">
+        Find a starting point{' '}
+        <span class="text-link__icon" aria-hidden="true">
+          ↓
+        </span>
+      </a>
+    </div>
+  </header>
+  <section id="explore">
+    <div class="section-heading">
+      <h2 class="section-heading__title">Five + one ways in</h2>
+      <span class="u-small">
+        From a first observation to a lasting reference
+      </span>
+    </div>
+    <div class="section-grid">
+      {Object.values(SECTIONS).map((s, i) => {
+        const count = portal.filter(
+          (e) => SECTIONS[e.data.type].path === s.path,
+        ).length;
+        return (
+          <article class="section-card">
+            <span class="section-card__number" aria-hidden="true">
+              0{i + 1}
+            </span>
+            <h3 class="section-card__title">
+              <a class="section-card__link" href={`/${s.path}/`}>
+                {s.title}{' '}
+                <span class="section-card__arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            </h3>
+            <p class="section-card__description">{s.blurb}</p>
+            <span class="section-card__date u-small">
+              {count} {count === 1 ? 'entry' : 'entries'}
+            </span>
+          </article>
+        );
+      })}
+      {latest && (
+        <article class="section-card" aria-labelledby="latest-entry">
+          <span class="section-card__number" aria-hidden="true">
+            06
+          </span>
+          <h3 class="section-card__title" id="latest-entry">
+            <a
+              class="section-card__link"
+              href={entryUrl(latest)}
+              aria-label={`Latest: ${latest.data.title}`}
+            >
+              Latest{' '}
+              <span class="section-card__arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          </h3>
+          <p class="section-card__description">{latest.data.title}</p>
+          <span class="section-card__date u-small">
+            Updated{' '}
+            <time datetime={lastUpdated(latest).toISOString()}>
+              {lastUpdated(latest).toISOString().slice(0, 10)}
+            </time>
+          </span>
+        </article>
+      )}
+    </div>
+  </section>
+  <section class="topic-band">
+    <div>
+      <p class="eyebrow">Follow</p>
+      <h2 class="topic-band__title">The topic map</h2>
+      <p>Different questions. Shared ground.</p>
+    </div>
+    <ul class="topic-map">
+      {topics.map((t) => (
+        <li>
+          <a class="topic-map__link" href={`/topics/${t.id}/`}>
+            {t.data.title}
+            <span class="topic-map__count">
+              {
+                portal.filter((e) => e.data.topics.some((x) => x.id === t.id))
+                  .length
+              }
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+  <section>
+    <div class="section-heading">
+      <h2 class="section-heading__title">Recently updated</h2>
+      <a class="section-heading__link" href="/recent/">
+        View the stream <span aria-hidden="true">→</span>
+      </a>
+    </div>
+    <div class="l-entry-grid l-entry-grid--home">
+      {portal.slice(0, 6).map((entry) => (
+        <EntryCard entry={entry} />
+      ))}
+    </div>
+    {!portal.length && (
+      <p class="empty-state">
+        The first notes are still taking shape. Explore the sections and topics
+        to see what is planned.
+      </p>
+    )}
+  </section>
+  {evergreens.length > 0 && (
+    <section>
+      <div class="section-heading">
+        <h2 class="section-heading__title">Strong foundations</h2>
+        <span class="u-small">Accepted insight, open to revision</span>
+      </div>
+      <div class="l-entry-grid l-entry-grid--home">
+        {evergreens.map((entry) => (
+          <EntryCard entry={entry} />
+        ))}
+      </div>
+    </section>
+  )}
+  <aside class="growth-note">
+    <h2 class="growth-note__title">A journey of continuous discovery.</h2>
+    <p class="growth-note__description">
+      Every entry shows where it stands: <strong>abstract</strong> for a first
+      sketch, <strong>evolving</strong> for an idea being revised, and{' '}
+      <strong>accepted</strong> for something ready to build on. None of them is
+      beyond a second look.
+    </p>
+    <a class="growth-note__link" href="/rss.xml">
+      Follow new entries with RSS →
+    </a>
+  </aside>
+</BaseLayout>
+
+<style>
+  @import '../styles/layers.css';
+
+  @layer components {
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+      column-gap: var(--space-6);
+      align-items: end;
+      padding-block: clamp(3.5rem, 8vw, 7rem) var(--space-2);
+    }
+    .hero__eyebrow {
+      grid-column: 1 / -1;
+      margin-block: 0 var(--space-3);
+    }
+    .hero__copy {
+      padding-block-end: var(--space-1);
+    }
+    .hero__title {
+      font-size: clamp(2.75rem, 5.2vw, 4.7rem);
+      line-height: 1.08;
+      margin: 0;
+    }
+    .hero__emphasis {
+      font-family: var(--font-editorial);
+      font-weight: 400;
+      color: var(--accent);
+    }
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem var(--space-3);
+    }
+    .section-card {
+      position: relative;
+      padding: var(--space-3) 1.25rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      display: flex;
+      flex-direction: column;
+      transition:
+        background-color var(--motion-duration) var(--motion-easing),
+        border-color var(--motion-duration) var(--motion-easing);
+    }
+    .section-card:has(a:hover),
+    .section-card:focus-within {
+      background: var(--panel);
+      border-color: var(--muted);
+    }
+    .section-card__link::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+    }
+    .section-card__arrow {
+      float: inline-end;
+      color: var(--muted);
+    }
+    .section-card__link:focus-visible {
+      outline: none;
+    }
+    .section-card:has(a:focus-visible) {
+      outline: 3px solid var(--accent);
+      outline-offset: 5px;
+    }
+    .section-card__link {
+      text-decoration: none;
+    }
+    .section-card__title {
+      font-size: 1.1rem;
+    }
+    .section-card__description {
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: var(--muted);
+      margin-block: 0 var(--space-3);
+    }
+    .section-card__date {
+      margin-top: auto;
+    }
+    .section-card__number {
+      font-family: var(--font-ui);
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+    }
+    .topic-band {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      align-items: center;
+      gap: var(--space-4);
+      border-radius: var(--radius-panel);
+      background: var(--panel);
+      padding: clamp(var(--space-3), 4vw, var(--space-5));
+    }
+    .topic-band__title {
+      margin-block: var(--space-1);
+    }
+    .topic-map {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+      gap: 0.8rem;
+      list-style: none;
+      padding: 0;
+    }
+    .topic-map__link {
+      display: flex;
+      gap: var(--space-4);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-pill);
+      background: var(--surface);
+      padding: 0.65rem 1.1rem;
+      font: 0.85rem/1.5 var(--font-ui);
+      text-decoration: none;
+    }
+    .topic-map__link:hover {
+      border-color: var(--muted);
+    }
+    .topic-map__count {
+      font: 0.75rem/2 var(--font-ui);
+      color: var(--muted);
+    }
+    .growth-note {
+      margin-block: var(--section-space);
+      border-block-start: 1px solid var(--line);
+      padding-block-start: 2.5rem;
+      max-width: var(--measure);
+      margin-inline: auto;
+    }
+    .growth-note__title {
+      font: italic 1.75rem/1.3 var(--font-editorial);
+    }
+    .growth-note__description {
+      color: var(--muted);
+    }
+    .growth-note__link {
+      font: 0.85rem var(--font-ui);
+    }
+
+    .l-entry-grid--home {
+      --grid-columns: 3;
+      --grid-gap: 1.5rem;
+    }
+    @media (max-width: 850px) {
+      .section-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .l-entry-grid--home {
+        --grid-columns: 2;
+      }
+      .hero {
+        grid-template-columns: 1fr;
+        gap: var(--space-2);
+      }
+      .hero__copy {
+        max-width: 52ch;
+      }
+      .hero__lede {
+        margin-block-end: var(--space-1);
+      }
+    }
+    @media (max-width: 560px) {
+      .hero {
+        padding-block-start: var(--space-5);
+      }
+      .section-grid,
+      .topic-band {
+        grid-template-columns: 1fr;
+      }
+      .section-card {
+        padding: 1.25rem;
+      }
+    }
+  }
+</style>

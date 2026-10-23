@@ -1,0 +1,12 @@
+- id: cybersecurity
+  title: Cyber Security
+  description: Protecting systems, networks, and data from security threats and risks.
+- id: frameworks
+  title: Frameworks
+  description: Structured approaches and methods for solving problems and building solutions.
+- id: technology
+  title: Technology
+  description: Exploring technologies, tools, and innovations that shape our world.
+- id: business-and-strategy
+  title: Business & Strategy
+  description: Exploring business models, strategies, and decisions that drive growth and innovation.

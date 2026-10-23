@@ -1,0 +1,37 @@
+---
+import { Badge } from 'accessible-astro-components';
+import type { Stage } from '../../lib/portal';
+interface Props {
+  stage: Stage;
+  filter?: boolean;
+}
+const { stage, filter = false } = Astro.props;
+---
+
+<Badge
+  class={`growth-stage growth-stage--${stage}`}
+  size="sm"
+  data-pagefind-filter={filter ? 'stage' : undefined}
+>
+  {stage}
+</Badge>
+
+<style is:global>
+  /* Adapter for unlayered Accessible Astro Badge styles; keep project rules layered. */
+  .growth-stage {
+    font-family: var(--font-ui);
+    font-weight: 400;
+    text-transform: capitalize;
+    border: 1px solid var(--muted);
+    border-radius: var(--radius-pill);
+    padding: 0.2em 0.7em;
+    color: var(--muted);
+    background: var(--surface);
+  }
+  .growth-stage--abstract {
+    border-style: dashed;
+  }
+  .growth-stage--accepted {
+    border-width: 2px;
+  }
+</style>

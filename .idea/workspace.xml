@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="29409be5-4bea-46ea-ace6-d9087210a789" name="Changes" comment="updated content">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/index.astro" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.astro" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="201" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0299343428547765" />
+      <entry key="MS500" value="1.9186740855845774" />
+      <entry key="S2" value="3.7124906358956133" />
+      <entry key="S5" value="5.125897949571665" />
+      <entry key="S10" value="5.922940372082312" />
+      <entry key="S30" value="6.603482912108894" />
+      <entry key="S60" value="6.796586119126962" />
+      <entry key="M2" value="6.898258167348209" />
+      <entry key="M5" value="7.346908948896711" />
+      <entry key="M10" value="10.474212241468607" />
+      <entry key="M15" value="14.578127110858214" />
+      <entry key="M30" value="26.065142716441333" />
+      <entry key="H1" value="48.13156958270132" />
+      <entry key="H2" value="91.22778851129972" />
+      <entry key="H4" value="174.88737563925622" />
+      <entry key="D1" value="436.5973211323487" />
+      <entry key="W1" value="531.6463977446183" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="1.0019732503991805" />
+      <entry key="MS500" value="1.9093349547728253" />
+      <entry key="S2" value="3.7083638010884474" />
+      <entry key="S5" value="5.123704085571658" />
+      <entry key="S10" value="5.9216909024111715" />
+      <entry key="S30" value="6.6030230113950035" />
+      <entry key="S60" value="6.7963500081721895" />
+      <entry key="M2" value="6.898138453569555" />
+      <entry key="M5" value="7.346855728288373" />
+      <entry key="M10" value="10.474166914876088" />
+      <entry key="M15" value="14.578080651106593" />
+      <entry key="M30" value="26.065095708679255" />
+      <entry key="H1" value="48.131514057908944" />
+      <entry key="H2" value="91.22766839981904" />
+      <entry key="H4" value="174.88714099740326" />
+      <entry key="D1" value="436.5971712751793" />
+      <entry key="W1" value="531.6463704902745" />
+    </decayedShown>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3KxFWp3I4nZA6FuzNxeimz5Yi2T" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "feature/three-column",
+    "javascript.preferred.runtime.type.id": "node",
+    "last_opened_file_path": "/Users/bipinpaulbedi/Documents/zink-lab",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "/Users/bipinpaulbedi/Documents/zink-lab/node_modules/prettier",
+    "settings.editor.selected.configurable": "ml.llm.AcpAgentsConfigurable",
+    "ts.external.directory.path": "/Users/bipinpaulbedi/Documents/zink-lab/node_modules/typescript/lib"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/content/portal/interpreter-from-scratch-lexer-parser-and-evaluator-in-f-sharpinterpreter-from-scratch-lexer-parser-and-evaluator-in-f-sharp" />
+      <recent name="$PROJECT_DIR$/src/content/portal/modeling-state-machines-in-f-with-domain-driven-designmodeling-state-machines-in-f-with-domain-driven-design" />
+      <recent name="$PROJECT_DIR$/src/content/portal/clean-architecture-in-functional-programming-domain-ports-and-adaptersclean-architecture-in-functional-programming-domain-ports-and-adapters" />
+      <recent name="$PROJECT_DIR$/src/content/portal/the-architects-playbook-9-laws-of-microservices-design" />
+      <recent name="$PROJECT_DIR$/src/content/portal" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-WS-262.10968.77" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="29409be5-4bea-46ea-ace6-d9087210a789" name="Changes" comment="" />
+      <created>1792491346754</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1792491346754</updated>
+      <workItem from="1792491347851" duration="455000" />
+      <workItem from="1792564202869" duration="350000" />
+      <workItem from="1792564613882" duration="12158000" />
+      <workItem from="1792584010433" duration="271000" />
+      <workItem from="1792584298490" duration="1983000" />
+      <workItem from="1792619247177" duration="883000" />
+      <workItem from="1792642679023" duration="14644000" />
+      <workItem from="1792721618870" duration="7692000" />
+    </task>
+    <task id="LOCAL-00001" summary="&#10;updated markdown">
+      <option name="closed" value="true" />
+      <created>1792582682335</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1792582682335</updated>
+    </task>
+    <task id="LOCAL-00002" summary="&#10;updated markdown">
+      <option name="closed" value="true" />
+      <created>1792583970875</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1792583970875</updated>
+    </task>
+    <task id="LOCAL-00003" summary="&#10;removed workspace files">
+      <option name="closed" value="true" />
+      <created>1792584358674</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1792584358674</updated>
+    </task>
+    <task id="LOCAL-00004" summary="better managed CSS">
+      <option name="closed" value="true" />
+      <created>1792643257101</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1792643257101</updated>
+    </task>
+    <task id="LOCAL-00005" summary="renamed practices to concepts">
+      <option name="closed" value="true" />
+      <created>1792644452795</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1792644452795</updated>
+    </task>
+    <task id="LOCAL-00006" summary="updated mode">
+      <option name="closed" value="true" />
+      <created>1792644682242</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1792644682242</updated>
+    </task>
+    <task id="LOCAL-00007" summary="added social profile">
+      <option name="closed" value="true" />
+      <created>1792646109730</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1792646109730</updated>
+    </task>
+    <task id="LOCAL-00008" summary="auto updatedworspace.xml">
+      <option name="closed" value="true" />
+      <created>1792648034678</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1792648034678</updated>
+    </task>
+    <task id="LOCAL-00009" summary="updated note">
+      <option name="closed" value="true" />
+      <created>1792648386180</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1792648386180</updated>
+    </task>
+    <task id="LOCAL-00010" summary="updated to notes and texts">
+      <option name="closed" value="true" />
+      <created>1792661650454</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1792661650454</updated>
+    </task>
+    <task id="LOCAL-00011" summary="updated to notes and texts">
+      <option name="closed" value="true" />
+      <created>1792662602060</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1792662602060</updated>
+    </task>
+    <task id="LOCAL-00012" summary="added content">
+      <option name="closed" value="true" />
+      <created>1792724023553</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1792724023553</updated>
+    </task>
+    <task id="LOCAL-00013" summary="added content">
+      <option name="closed" value="true" />
+      <created>1792724511239</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1792724511240</updated>
+    </task>
+    <task id="LOCAL-00014" summary="added content">
+      <option name="closed" value="true" />
+      <created>1792731361703</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1792731361703</updated>
+    </task>
+    <task id="LOCAL-00015" summary="updated content">
+      <option name="closed" value="true" />
+      <created>1792733079750</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1792733079750</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="&#10;updated markdown" />
+    <MESSAGE value="&#10;removed workspace files" />
+    <MESSAGE value="better managed CSS" />
+    <MESSAGE value="renamed practices to concepts" />
+    <MESSAGE value="updated mode" />
+    <MESSAGE value="added social profile" />
+    <MESSAGE value="auto updatedworspace.xml" />
+    <MESSAGE value="updated note" />
+    <MESSAGE value="updated to notes and texts" />
+    <MESSAGE value="added content" />
+    <MESSAGE value="updated content" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated content" />
+  </component>
+</project>

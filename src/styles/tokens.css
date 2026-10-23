@@ -1,0 +1,45 @@
+:root {
+  color-scheme: light dark;
+  --surface: light-dark(#faf9f6, #191b19);
+  --panel: light-dark(#f0efeb, #222522);
+  --line: light-dark(#deddd7, #3d423d);
+  --text: light-dark(#242622, #f1f0e9);
+  --muted: light-dark(#62665f, #b1b5ab);
+  --accent: light-dark(#855135, #e3ac88);
+  --color-default-border: var(--line);
+  --color-default-bg: var(--surface);
+  --color-default-text: var(--text);
+  --font-body: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+  --font-ui: system-ui, sans-serif;
+  --font-editorial: Charter, Cambria, serif;
+  --font-code: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+  --leading-body: 1.65;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4rem;
+  --measure: 68ch;
+  --layout-width: 1160px;
+  --layout-gutter: 4rem;
+  --section-space: clamp(3.5rem, 7vw, 6rem);
+  --radius-control: 8px;
+  --radius-card: 10px;
+  --radius-panel: 12px;
+  --radius-pill: 999px;
+  --motion-duration: 180ms;
+  --motion-easing: ease;
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+@media (max-width: 560px) {
+  :root {
+    --layout-gutter: 2.5rem;
+  }
+}

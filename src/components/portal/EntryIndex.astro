@@ -1,0 +1,46 @@
+---
+import type { Page } from 'astro';
+import { Pagination } from 'accessible-astro-components';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryCard from './EntryCard.astro';
+import type { Entry } from '../../lib/portal';
+interface Props {
+  title: string;
+  description: string;
+  page: Page<Entry>;
+}
+const { title, description, page } = Astro.props;
+const slash = (url: string | undefined) =>
+  url ? `${url.replace(/\/$/, '')}/` : undefined;
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-intro">
+    <p class="eyebrow">Explore</p>
+    <h1>{title}</h1>
+    <p class="lede">{description}</p>
+    <p class="u-small">
+      {page.total} {page.total === 1 ? 'entry' : 'entries'} · Last updated first
+    </p>
+  </header>
+  <section aria-label="Entries" class="l-entry-grid">
+    {page.data.map((entry) => (
+      <EntryCard entry={entry} />
+    ))}
+  </section>
+  {!page.data.length && (
+    <p class="empty-state">
+      No entries yet. Come back as this part of the portal grows.
+    </p>
+  )}
+  {page.lastPage > 1 && (
+    <Pagination
+      currentPage={page.currentPage}
+      totalPages={page.lastPage}
+      firstPage={slash(page.url.first)}
+      previousPage={slash(page.url.prev)}
+      nextPage={slash(page.url.next)}
+      lastPage={slash(page.url.last)}
+    />
+  )}
+</BaseLayout>

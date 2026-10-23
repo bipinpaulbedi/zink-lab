@@ -1,0 +1,32 @@
+---
+import '../../styles/entry-card.css';
+import GrowthStage from './GrowthStage.astro';
+import { entryUrl, lastUpdated, type Entry } from '../../lib/portal';
+import { SECTIONS } from '../../site';
+interface Props {
+  entry: Entry;
+}
+const { entry } = Astro.props;
+---
+
+<article class="entry-card">
+  <div class="entry-card__meta">
+    <a class="entry-card__section" href={`/${SECTIONS[entry.data.type].path}/`}>
+      {SECTIONS[entry.data.type].label}
+    </a>
+    <GrowthStage stage={entry.data.stage} />
+    {entry.data.draft && <strong>Draft</strong>}
+  </div>
+  <h3 class="entry-card__title">
+    <a class="entry-card__link" href={entryUrl(entry)}>
+      {entry.data.title}
+    </a>
+  </h3>
+  <p class="entry-card__description">{entry.data.description}</p>
+  <p class="entry-card__date u-small">
+    Updated{' '}
+    <time datetime={lastUpdated(entry).toISOString()}>
+      {lastUpdated(entry).toISOString().slice(0, 10)}
+    </time>
+  </p>
+</article>

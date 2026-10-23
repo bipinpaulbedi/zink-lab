@@ -1,0 +1,24 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import EntryIndex from '../../components/portal/EntryIndex.astro';
+import { byUpdated, getPortal } from '../../lib/portal';
+import { SECTIONS, SECTION_IDS } from '../../site';
+export const getStaticPaths = (async ({ paginate }) => {
+  const portal = (await getPortal()).sort(byUpdated);
+  return SECTION_IDS.flatMap((type) =>
+    paginate(
+      portal.filter((e) => e.data.type === type),
+      {
+        params: { section: SECTIONS[type].path },
+        props: { type },
+        pageSize: 20,
+      },
+    ),
+  );
+}) satisfies GetStaticPaths;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { page, type } = Astro.props;
+const { title, blurb } = SECTIONS[type];
+---
+
+<EntryIndex title={title} description={blurb} page={page} />

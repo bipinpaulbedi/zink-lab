@@ -1,0 +1,49 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryCard from '../../components/portal/EntryCard.astro';
+import { byUpdated, getPortal, type Entry, type Stage } from '../../lib/portal';
+export async function getStaticPaths() {
+  const portal = (await getPortal()).sort(byUpdated);
+  return (await getCollection('topics')).map((topic) => ({
+    params: { topic: topic.id },
+    props: {
+      topic,
+      entries: portal.filter((e) =>
+        e.data.topics.some((t) => t.id === topic.id),
+      ),
+    },
+  }));
+}
+interface Props {
+  topic: CollectionEntry<'topics'>;
+  entries: Entry[];
+}
+const { topic, entries } = Astro.props;
+const stages: Stage[] = ['abstract', 'evolving', 'accepted'];
+---
+
+<BaseLayout title={topic.data.title} description={topic.data.description}>
+  <header class="page-intro">
+    <p class="eyebrow">
+      <a href="/topics/">Topic map</a>
+    </p>
+    <h1>{topic.data.title}</h1>
+    <p class="lede">{topic.data.description}</p>
+  </header>
+  {stages.map((stage) => (
+    <section>
+      <h2 class="u-capitalize">{stage}</h2>
+      <div class="l-entry-grid">
+        {entries
+          .filter((e) => e.data.stage === stage)
+          .map((entry) => (
+            <EntryCard entry={entry} />
+          ))}
+      </div>
+      {!entries.some((e) => e.data.stage === stage) && (
+        <p class="u-muted">No {stage} entries yet.</p>
+      )}
+    </section>
+  ))}
+</BaseLayout>

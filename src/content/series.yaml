@@ -1,0 +1,3 @@
+- id: astro-on-cloudflare
+  title: Astro on Cloudflare
+  description: A three-part series about deployment of a static Astro website to Cloudflare.

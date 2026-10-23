@@ -1,0 +1,44 @@
+{
+  "name": "zink-lab",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=26.0.0 <27",
+    "npm": ">=11.10.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && pagefind --site dist",
+    "preview": "wrangler dev --port 8788",
+    "check": "astro check && prettier --check .",
+    "format": "prettier --write .",
+    "test:html": "html-validate \"dist/**/*.html\"",
+    "test:e2e": "playwright test",
+    "test:perf": "node scripts/lighthouse.mjs",
+    "test:content": "node scripts/test-content.mjs",
+    "test:links": "node scripts/check-urls.mjs"
+  },
+  "dependencies": {
+    "@astrojs/rss": "4.0.19",
+    "@astrojs/sitemap": "3.7.4",
+    "accessible-astro-components": "5.8.0",
+    "astro": "7.3.8",
+    "pagefind": "1.5.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.64.0",
+    "html-validate": "11.16.2",
+    "lighthouse": "13.5.0",
+    "prettier": "3.9.10",
+    "prettier-plugin-astro": "1.1.1",
+    "typescript": "6.0.3",
+    "wrangler": "4.149.0"
+  },
+  "overrides": {
+    "@axe-core/playwright": {
+      "playwright-core": "1.64.0"
+    }
+  }
+}

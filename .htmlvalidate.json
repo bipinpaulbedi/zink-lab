@@ -1,0 +1,55 @@
+{
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "void-style": [
+      "error",
+      {
+        "style": "omit"
+      }
+    ],
+    "no-trailing-whitespace": "off",
+    "long-title": "off",
+    "no-inline-style": [
+      "error",
+      {
+        "allowVariables": true,
+        "allowedProperties": ["overflow-x"]
+      }
+    ]
+  },
+  "elements": [
+    "html5",
+    {
+      "pagefind-config": {
+        "flow": true,
+        "phrasing": true,
+        "attributes": {
+          "bundle-path": {},
+          "preload": {
+            "boolean": true
+          }
+        }
+      },
+      "pagefind-input": {
+        "flow": true,
+        "phrasing": true
+      },
+      "pagefind-filter-dropdown": {
+        "flow": true,
+        "phrasing": true,
+        "attributes": {
+          "filter": {},
+          "label": {}
+        }
+      },
+      "pagefind-summary": {
+        "flow": true,
+        "phrasing": true
+      },
+      "pagefind-results": {
+        "flow": true,
+        "phrasing": true
+      }
+    }
+  ]
+}

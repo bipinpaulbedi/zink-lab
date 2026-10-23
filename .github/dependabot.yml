@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule: { interval: weekly }
+    cooldown: { default-days: 7, semver-major-days: 30 }
+    groups:
+      astro: { patterns: ['astro', '@astrojs/*'] }
+      ci-tools:
+        {
+          patterns:
+            [
+              '@playwright/test',
+              '@axe-core/playwright',
+              'lighthouse',
+              'html-validate',
+              'prettier*',
+            ],
+        }
+    ignore:
+      - dependency-name: typescript # until @astrojs/check accepts TypeScript 7
+        update-types: ['version-update:semver-major']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly }
+    cooldown: { default-days: 7 }

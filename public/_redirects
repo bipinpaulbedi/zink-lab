@@ -1,0 +1,5 @@
+# Use only 301. Put one moved URL on each line, newest first. Do not delete a line.
+# A move to another section retains the entry URL. Add a line for a renamed slug or section path.
+/feed.xml   /rss.xml   301
+/feed/      /rss.xml   301
+# /old-slug/   /new-slug/   301
