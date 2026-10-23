@@ -39,7 +39,7 @@ export type Section = keyof typeof SECTIONS;
 export const SECTION_IDS = Object.keys(SECTIONS) as [Section, ...Section[]];
 
 /** Portal source location. Entries link to their Git history and discussions here. */
-export const REPO = 'https://github.com/example/blog'; // replace before publishing
+export const REPO = 'https://github.com/bipinpaulbedi/zink-lab'; // replace before publishing
 export const AUTHOR_NAME = 'Bipin Paul Bedi'; // sole author until an authors collection is added
 
 /** Replace these placeholder URLs with the author's profiles before publishing. */
