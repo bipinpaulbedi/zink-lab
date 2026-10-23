@@ -14,7 +14,7 @@ This is a static website. This checkout contains the Astro portal implementation
 - `npm run test:links`: checks built local links and anchors; compares live sitemap URLs when `LIVE_SITE_URL` is set.
 - `npm run test:content`: runs isolated build fixtures for schema rejection, draft visibility, images, pagination, and backlinks.
 - `npm run test:html`: runs html-validate on `dist/`. Run the build first.
-- `npm run test:e2e`: runs Playwright and axe with `wrangler dev` in both themes. The `tests/` suite.
+- `npm run test:e2e`: builds a temporary site copy with current content and feature fixtures, then runs the `tests/` Playwright and axe suite with `wrangler dev` in both themes. Requires port 8788 to be free; leaves working content and production `dist/` unchanged.
 - `npm run test:perf`: runs Lighthouse mobile tests. Each category must be ≥ 0.95 (`scripts/lighthouse.mjs`).
 
 **Done means:** `npm run check && npm run build && npm run test:html` must pass. After changes to templates, styles, scripts, headers, or redirects, `npm run test:e2e` must also pass. Always run the build. `astro check` accepts an unknown topic. Only `astro build` rejects it.

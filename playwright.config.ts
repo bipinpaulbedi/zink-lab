@@ -17,8 +17,9 @@ export default defineConfig({
     ? []
     : {
         command: 'npm run preview',
+        cwd: process.env.E2E_ROOT ?? process.cwd(),
         url: 'http://localhost:8788',
-        reuseExistingServer: !process.env.CI,
+        reuseExistingServer: !process.env.CI && !process.env.E2E_ROOT,
         env: { WRANGLER_SEND_METRICS: 'false' },
       },
 });

@@ -3,12 +3,14 @@ import AxeBuilder from '@axe-core/playwright';
 import { readFileSync, readdirSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
+import { join } from 'node:path';
 
-const entryPaths = readdirSync('src/content/portal')
+const root = process.env.E2E_ROOT ?? process.cwd();
+const entryPaths = readdirSync(join(root, 'src/content/portal'))
   .filter(
     (id) =>
       !/^draft: true$/m.test(
-        readFileSync(`src/content/portal/${id}/index.md`, 'utf8'),
+        readFileSync(join(root, `src/content/portal/${id}/index.md`), 'utf8'),
       ),
   )
   .map((id) => `/${id}/`);
@@ -21,8 +23,8 @@ const routes = [
   '/miscellaneous/',
   '/vault/',
   '/topics/',
-  '/topics/astro/',
-  '/series/astro-on-cloudflare/',
+  '/topics/e2e-astro/',
+  '/series/e2e-series/',
   '/recent/',
   '/search/',
   '/missing-entry/',
@@ -156,7 +158,7 @@ test('search returns entries and filters by section, stage and topic', async ({
   for (const [label, value] of [
     ['Section', 'Vault'],
     ['Growth stage', 'abstract'],
-    ['Topic', 'Cloudflare'],
+    ['Topic', 'E2E Cloudflare'],
   ] as const) {
     await page.getByRole('combobox', { name: label }).click();
     await page.getByRole('option', { name: new RegExp(value, 'i') }).click();
@@ -284,7 +286,7 @@ test('content metadata, backlinks and series are rendered', async ({
   await expect(
     page.getByRole('link', { name: 'See how this grew' }),
   ).toHaveAttribute('href', /\/commits\/main\/src\/content\/portal\//);
-  await page.goto('/series/astro-on-cloudflare/');
+  await page.goto('/series/e2e-series/');
   await expect(
     page.getByRole('link', { name: 'A small reference for static hosting' }),
   ).toBeVisible();
@@ -293,17 +295,14 @@ test('content metadata, backlinks and series are rendered', async ({
 test('production excludes drafts, preserves redirects and serves permanent URLs', async ({
   request,
 }) => {
-  for (const [path, target] of [
-    ['/feed/', '/rss.xml'],
-    ['/feed.xml', '/rss.xml'],
-    ['/modals/', '/miscellaneous/'],
-    ['/modals', '/miscellaneous/'],
-    ['/modals/2/', '/miscellaneous/2/'],
-    ['/catch-all/', '/miscellaneous/'],
-    ['/catch-all', '/miscellaneous/'],
-    ['/catch-all/2/', '/miscellaneous/2/'],
-  ] as const) {
-    const r = await request.get(path, { maxRedirects: 0 });
+  const redirects = readFileSync(join(root, 'public/_redirects'), 'utf8')
+    .split('\n')
+    .filter((line) => /^\//.test(line))
+    .map((line) => line.trim().split(/\s+/));
+  expect(redirects.length).toBeGreaterThan(0);
+  for (const [path, target, status] of redirects) {
+    expect(status).toBe('301');
+    const r = await request.get(path!, { maxRedirects: 0 });
     expect(r.status()).toBe(301);
     expect(r.headers()['location']).toBe(target);
   }
@@ -313,7 +312,7 @@ test('production excludes drafts, preserves redirects and serves permanent URLs'
   expect((feed.match(/<item>/g) ?? []).length).toBe(entryPaths.length);
   for (const path of entryPaths)
     expect((await request.get(path)).status()).toBe(200);
-  const sitemap = readFileSync('dist/sitemap-0.xml', 'utf8');
+  const sitemap = readFileSync(join(root, 'dist/sitemap-0.xml'), 'utf8');
   expect(sitemap).toContain('/concepts/');
   expect(sitemap).toContain('/miscellaneous/');
   expect(sitemap).not.toContain('/modals/');

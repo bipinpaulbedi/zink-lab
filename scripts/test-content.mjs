@@ -66,6 +66,11 @@ try {
 
   rmSync(join(root, 'src/content/portal'), { recursive: true, force: true });
   mkdirSync(join(root, 'src/content/portal'), { recursive: true });
+  // Fixtures own their topic so author taxonomy changes cannot invalidate them.
+  writeFileSync(
+    join(root, 'src/content/topics.yaml'),
+    '- id: portal\n  title: Portal\n  description: A topic for isolated content verification fixtures.\n',
+  );
   const cases = [
     ['topics', base, /reserved route/i],
     ['concepts', base, /reserved route/i],

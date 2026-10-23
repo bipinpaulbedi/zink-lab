@@ -49,6 +49,8 @@ npm run test:perf
 
 CI runs these checks plus lychee. Content tests build isolated temporary fixtures; they never edit working entries. They cover invalid schemas, reserved/retired slugs, empty sections, pagination, backlinks, optimized images, production draft exclusion, and preview `noindex`. Browser tests cover both themes, WCAG 2.2 AA axe rules, keyboard controls, narrow screens, reduced motion, privacy before video activation, CSP, host headers, permanent URLs, search filters, and copy/video behavior.
 
+`npm run test:e2e` builds and serves a temporary copy of the site with the current content plus dedicated feature fixtures. It checks the published entries and exercises optional features independently of starter content. The temporary copy is removed afterward; the working content and production `dist/` are unchanged. Stop any server on port 8788 before running it so the suite can start its isolated Wrangler server.
+
 The entry JavaScript budget counts executable scripts; JSON-LD is structured data. The combined theme, copy, and video scripts stay below 1.5 KB. Render-blocking CSS is measured after gzip. Lighthouse enforces a minimum score of 0.95 in all four categories on the home page and an entry. Field Core Web Vitals and manual screen-reader/release checks remain separate from laboratory results.
 
 ## Before publishing
