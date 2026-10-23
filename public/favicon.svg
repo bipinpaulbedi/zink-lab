@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#243d32"/><text x="15" y="47" fill="#f7f5ee" font-family="serif" font-size="52">z</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Bipin Paul Bedi</title>
+  <rect width="64" height="64" rx="12" fill="#855135" />
+  <path
+    fill="#faf9f6"
+    fill-rule="evenodd"
+    d="M18 12h7v17c2-3 6-4 10-4 9 0 15 6 15 16s-6 16-15 16c-4 0-8-2-10-5v4h-7V12Zm16 20c-6 0-9 4-9 9s3 9 9 9 9-4 9-9-3-9-9-9Z"
+  />
+</svg>
