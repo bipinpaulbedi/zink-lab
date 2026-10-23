@@ -51,8 +51,6 @@ CI runs these checks plus lychee. Content tests build isolated temporary fixture
 
 The entry JavaScript budget counts executable scripts; JSON-LD is structured data. The combined theme, copy, and video scripts stay below 1.5 KB. Render-blocking CSS is measured after gzip. Lighthouse enforces a minimum score of 0.95 in all four categories on the home page and an entry. Field Core Web Vitals and manual screen-reader/release checks remain separate from laboratory results.
 
-Measured locally on 2026-10-22: home CSS totals **13,874 bytes gzip**, entry CSS **13,458 bytes gzip**, and search CSS **9,973 bytes gzip**. Home theme scripts total **689 bytes**; the entry with both code and video totals **1,359 bytes** of executable inline JavaScript. Both tested pages scored **100** in every Lighthouse category. These are local laboratory measurements, not field metrics.
-
 ## Before publishing
 
 Confirm the site URL. `https://bipinpaulbedi.com` remains the documented example in `astro.config.mjs`, `public/robots.txt`, and `wrangler.jsonc`. Replace `REPLACE_WITH_AUTHOR_NAME` and `https://github.com/example/blog` in `src/site.ts`. Enable GitHub Discussions in the confirmed repository and replace the starter entries.
