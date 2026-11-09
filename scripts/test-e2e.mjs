@@ -19,6 +19,7 @@ try {
   for (const name of [
     'src',
     'public',
+    'scripts',
     'astro.config.mjs',
     'package.json',
     'tsconfig.json',
@@ -26,6 +27,13 @@ try {
   ])
     cpSync(name, join(root, name), { recursive: true });
   symlinkSync(resolve('node_modules'), join(root, 'node_modules'), 'dir');
+  writeFileSync(
+    join(root, 'src/data/goodreads_library_export.csv'),
+    'Book Id,Title,Author,Exclusive Shelf,My Rating,Date Read\n' +
+      '1,A reader’s first book,Fixture Author,read,5,2026/10/01\n' +
+      '2,A very long book title about understanding systems and following ideas across disciplines,Another Author,read,3,2025/03/01\n' +
+      '3,An undated book,A Third Author,read,0,\n',
+  );
   const configPath = join(root, 'astro.config.mjs');
   writeFileSync(
     configPath,

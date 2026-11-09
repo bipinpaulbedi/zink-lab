@@ -23,6 +23,7 @@ const routes = [
   '/miscellaneous/',
   '/vault/',
   '/topics/',
+  '/books/',
   '/topics/e2e-astro/',
   '/series/e2e-series/',
   '/recent/',
@@ -126,6 +127,61 @@ for (const route of routes) {
     await expect(page.locator('main')).toBeFocused();
   });
 }
+
+test('bookshelf navigation, personal ratings and optional dates', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const preview = page.getByRole('region', { name: 'From the bookshelf' });
+  await expect(preview.locator('.book')).toHaveCount(3);
+  await expect(
+    preview.getByRole('link', { name: 'View all 3 books' }),
+  ).toHaveAttribute('href', '/books/');
+  await expect(
+    preview.getByRole('link', { name: 'A reader’s first book' }),
+  ).toHaveAttribute('href', 'https://www.goodreads.com/book/show/1');
+  const link = page
+    .getByRole('navigation', { name: 'Primary', exact: true })
+    .getByRole('link', { name: 'Books', exact: true });
+  await link.click();
+  await expect(link).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('.book')).toHaveCount(3);
+  await expect(
+    page.getByRole('link', { name: 'A reader’s first book' }),
+  ).toHaveAttribute('href', 'https://www.goodreads.com/book/show/1');
+  await expect(page.locator('.book').first()).toContainText('My rating: 5/5');
+  await expect(page.locator('.book').last()).toContainText('Not rated');
+  await expect(page.locator('.book').last().locator('time')).toHaveCount(0);
+  for (const route of ['/', '/books/']) {
+    await page.goto(route);
+    for (const width of [1440, 851, 768, 561, 320]) {
+      await page.setViewportSize({ width, height: 900 });
+      const cards = await page.locator('.book__cover').evaluateAll((covers) =>
+        covers.map((cover) => {
+          const bounds = cover.getBoundingClientRect();
+          const title = cover.querySelector('h3')!.getBoundingClientRect();
+          const author = cover
+            .querySelector('.book__cover-author')!
+            .getBoundingClientRect();
+          return {
+            width: Math.round(bounds.width),
+            height: Math.round(bounds.height),
+            fits:
+              title.top >= bounds.top &&
+              title.bottom <= author.top &&
+              author.bottom <= bounds.bottom,
+          };
+        }),
+      );
+      expect(new Set(cards.map((card) => card.width)).size).toBe(1);
+      expect(new Set(cards.map((card) => card.height)).size).toBe(1);
+      expect(cards.every((card) => card.fits)).toBe(true);
+      await expect(
+        page.locator('.book > h3, .book > .book__author'),
+      ).toHaveCount(0);
+    }
+  }
+});
 
 test('theme toggle supports keyboard and survives navigation', async ({
   page,
@@ -349,7 +405,12 @@ test('native navigation and video fallback work without JavaScript', async ({
 test('narrow viewport and reduced motion remain usable', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  for (const route of ['/', '/static-hosting-reference/', '/search/']) {
+  for (const route of [
+    '/',
+    '/books/',
+    '/static-hosting-reference/',
+    '/search/',
+  ]) {
     await page.goto(route);
     expect(
       await page.evaluate(

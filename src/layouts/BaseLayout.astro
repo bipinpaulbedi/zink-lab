@@ -61,6 +61,15 @@ const path = Astro.url.pathname;
               Topics
             </a>
           </li>
+          <li>
+            <a
+              class="site-header__link"
+              href="/books/"
+              aria-current={path === '/books/' ? 'page' : undefined}
+            >
+              Books
+            </a>
+          </li>
           <li class="site-header__search">
             <a
               class="site-header__link"

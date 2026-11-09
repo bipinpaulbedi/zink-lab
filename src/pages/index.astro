@@ -2,6 +2,8 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EntryCard from '../components/portal/EntryCard.astro';
+import BookCard from '../components/BookCard.astro';
+import shelf from '../data/books.json';
 import { byUpdated, entryUrl, getPortal, lastUpdated } from '../lib/portal';
 import { SECTIONS } from '../site';
 const portal = (await getPortal()).sort(byUpdated);
@@ -25,8 +27,8 @@ const evergreens = portal
     </h1>
     <div class="hero__copy">
       <p class="lede hero__lede">
-        Notes, experiments, and concepts for better understanding. A place to think
-        in public, follow connections, and revisit what we know.
+        Notes, experiments, and concepts for better understanding. A place to
+        think in public, follow connections, and revisit what we know.
       </p>
       <a class="text-link" href="#explore">
         Find a starting point{' '}
@@ -137,6 +139,26 @@ const evergreens = portal
       </p>
     )}
   </section>
+  {shelf.books.length > 0 && (
+    <section aria-labelledby="home-bookshelf">
+      <div class="section-heading">
+        <h2 class="section-heading__title" id="home-bookshelf">
+          From the bookshelf
+        </h2>
+        <a class="section-heading__link" href="/books/">
+          View all {shelf.books.length} books <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <p class="reading-preview__description">
+        A few books I’ve read along the way. Different voices, new perspectives.
+      </p>
+      <ul class="reading-preview__grid">
+        {shelf.books.slice(0, 3).map((book, index) => (
+          <BookCard book={book} number={index + 1} />
+        ))}
+      </ul>
+    </section>
+  )}
   {evergreens.length > 0 && (
     <section>
       <div class="section-heading">
@@ -288,6 +310,18 @@ const evergreens = portal
       font: 0.75rem/2 var(--font-ui);
       color: var(--muted);
     }
+    .reading-preview__description {
+      color: var(--muted);
+      margin-block: 0 var(--space-4);
+    }
+    .reading-preview__grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-4);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
     .growth-note {
       margin-block: var(--section-space);
       border-block-start: 1px solid var(--line);
@@ -310,7 +344,8 @@ const evergreens = portal
       --grid-gap: 1.5rem;
     }
     @media (max-width: 850px) {
-      .section-grid {
+      .section-grid,
+      .reading-preview__grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .l-entry-grid--home {
@@ -332,6 +367,7 @@ const evergreens = portal
         padding-block-start: var(--space-5);
       }
       .section-grid,
+      .reading-preview__grid,
       .topic-band {
         grid-template-columns: 1fr;
       }

@@ -5,8 +5,8 @@ This is a static website. This checkout contains the Astro portal implementation
 ## Commands
 
 - `npm ci`: installs the exact versions in the lockfile. Install scripts never run (`.npmrc`).
-- `npm run dev`: starts the Astro development server on http://localhost:4321 with drafts visible.
-- `npm run build`: runs `astro build`, then makes the Pagefind index in `dist/`. Drafts are not included.
+- `npm run dev`: imports the Goodreads CSV, then starts the Astro development server on http://localhost:4321 with drafts visible.
+- `npm run build`: imports the Goodreads CSV, runs `astro build`, then makes the Pagefind index in `dist/`. Drafts are not included.
 - `SHOW_DRAFTS=true npm run build`: makes a preview build with drafts and `noindex` on each page.
 - `npm run preview`: serves `dist/` with `wrangler dev` on http://localhost:8788. Uses production routing, `_headers`, and `_redirects`.
 - `npm run check`: runs `astro check`, then `prettier --check .`
@@ -136,3 +136,9 @@ For multi-step tasks, state a brief plan:
 ```
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+## Bookshelf
+
+- `src/pages/books.astro` displays `/books/`, a standalone page outside the five portal entry sections. Its route is reserved in `src/content.config.ts`.
+- `src/data/goodreads_library_export.csv` is the replaceable Goodreads source export. `npm run dev` and `npm run build` import it into `src/data/books.json`. Alternatively, `node scripts/import-books.mjs /path/to/goodreads_library_export.csv` copies and imports a new export. Commit both data files. `node scripts/test-books.mjs` checks the importer. The original CSV stays outside `public/` and is not published.
+- Goodreads RSS for the author's profile returned 404 on 2026-11-09; automatic synchronization is unavailable. The page uses CSS jackets and local data with no third-party requests. Do not add authenticated scraping or credentials.

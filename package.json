@@ -7,8 +7,8 @@
     "npm": ">=11.10.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build && pagefind --site dist",
+    "dev": "node scripts/import-books.mjs && astro dev",
+    "build": "node scripts/import-books.mjs && astro build && pagefind --site dist",
     "preview": "wrangler dev --port 8788",
     "check": "astro check && prettier --check .",
     "format": "prettier --write .",

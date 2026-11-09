@@ -73,6 +73,7 @@ try {
   );
   const cases = [
     ['topics', base, /reserved route/i],
+    ['books', base, /reserved route/i],
     ['concepts', base, /reserved route/i],
     ['notes', base, /reserved route/i],
     ['miscellaneous', base, /reserved route/i],

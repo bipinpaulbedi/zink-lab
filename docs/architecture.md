@@ -209,6 +209,13 @@ Cloudflare Access protects preview deployments and is the only authentication pa
 - **Decision:** Retain plain CSS, system fonts, the existing palette, and Accessible Astro Components. Use a lightweight ITCSS/BEM hybrid: ordered `tokens`, `reset`, `base`, `layout`, `components`, and `utilities` cascade layers; descriptive `block__element` / `block--modifier` names; `l-` layout classes; and `u-` utilities. Keep shared foundations in `src/styles/`, and move local styles to their owning Astro components/routes. Import the canonical layer order at each CSS entry point so Astro's emitted stylesheet order does not establish a different cascade. Scope Markdown descendants to the entry's prose root.
 - **Integration boundary:** Accessible Astro Components and Pagefind emit unlayered styles. Keep narrowly documented unlayered adapters for Badge appearance, the package's native-button typography reset, and Pagefind theme variables/color-scheme. Keep hidden/reduced-motion safeguards. Do not increase specificity or add `!important` to ordinary component rules to compete with vendor CSS.
 
+### ADR-10: Goodreads bookshelf
+
+- **Context:** The author requested a section displaying their read books from Goodreads. On 2026-11-09, the read-shelf RSS endpoint for user `21866367` returned 404 and the shelf page redirected to sign-in. An authenticated integration would conflict with the site's no-secrets design.
+- **Decision:** Add `/books/` as a standalone route alongside the five Markdown entry sections. Import a user-provided Goodreads CSV export into `src/data/books.json` using a dependency-free Node script. Publish only read books and their ID, title, author, personal rating, and finished date. Do not publish reviews or unread shelves. Keep the replaceable source export at `src/data/goodreads_library_export.csv`, outside the published assets. The development and build commands import it automatically into the JSON before Astro runs, without relying on npm lifecycle hooks (`ignore-scripts` remains enabled). Refresh by replacing the CSV and rebuilding; preserve the updated date when the imported books have not changed. Commit both the CSV and generated JSON. The empty state links to Goodreads if there are no read books.
+- **Presentation:** Use responsive CSS book jackets, native links to Goodreads, text ratings, and optional finished dates. Preserve the existing palette, static hosting, CSP, and privacy rules. This introduces no dependencies, third-party browser requests, or page scripts.
+- **Review condition:** Revisit automatic build-time synchronization if Goodreads offers an accessible public shelf source. Do not use credentials or authenticated scraping.
+
 ## 7. Content model
 
 Each post is now a digital portal entry in plain Markdown. Maggie Appleton describes the digital portal model ([history and ethos](https://maggieappleton.com/garden-history)). The five sections are Notes, Experiments, Concepts, Miscellaneous, and Vault. Topics and links connect entries instead of dates. Each entry shows its completion stage. Its folder uses its permanent slug as its name and contains `index.md` and images. All sections serve entries at `/<slug>/`. Build tests must confirm rejection of reserved or redirected slugs, unknown sections, unknown stages, and unknown topics. They must also reject an experiment without a nonempty epistemic note. Each rejection must identify the cause. Date coercion checks valid date values and ordering; `YYYY-MM-DD` input and nonempty alt text in Markdown bodies are authoring conventions, not enforced by this schema.
@@ -223,7 +230,7 @@ import { SECTIONS, SECTION_IDS } from './site';
 
 // All entries use /<slug>/. These routes and build folders share the same flat URL space.
 // Kebab-case excludes file names such as rss.xml.
-const ROUTES = ['404', 'pagefind', 'recent', 'search', 'series', 'topics'];
+const ROUTES = ['404', 'books', 'pagefind', 'recent', 'search', 'series', 'topics'];
 const RESERVED = [...ROUTES, ...Object.values(SECTIONS).map((s) => s.path)];
 // Do not reuse a retired slug. A _redirects rule has priority over a page at the same path.
 const RETIRED =

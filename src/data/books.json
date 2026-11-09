@@ -1,0 +1,201 @@
+{
+  "updated": "2026-11-09",
+  "books": [
+    {
+      "id": "18176747",
+      "title": "The Hard Thing About Hard Things: Building a Business When There Are No Easy Answers―Straight Talk on the Challenges of Entrepreneurship",
+      "author": "Ben Horowitz",
+      "rating": 0,
+      "dateRead": "2024-11-24"
+    },
+    {
+      "id": "54110137",
+      "title": "Sapiens: A Graphic History, Volume 1 - The Birth of Humankind",
+      "author": "David Vandermeulen",
+      "rating": 0,
+      "dateRead": "2021-04-11"
+    },
+    {
+      "id": "54323859",
+      "title": "Zero to Sold: How to Start, Run, and Sell a Bootstrapped Business",
+      "author": "Arvid Kahl",
+      "rating": 4,
+      "dateRead": "2020-12-13"
+    },
+    {
+      "id": "32681092",
+      "title": "Writing An Interpreter In Go",
+      "author": "Thorsten Ball",
+      "rating": 0,
+      "dateRead": "2020-11-02"
+    },
+    {
+      "id": "9005772",
+      "title": "Just Enough Software Architecture: A Risk-Driven Approach",
+      "author": "George H. Fairbanks",
+      "rating": 4,
+      "dateRead": "2020-08-30"
+    },
+    {
+      "id": "44144493",
+      "title": "Fundamentals of Software Architecture: An Engineering Approach",
+      "author": "Mark   Richards",
+      "rating": 0,
+      "dateRead": "2020-08-09"
+    },
+    {
+      "id": "15014",
+      "title": "Crucial Conversations: Tools for Talking When Stakes are High",
+      "author": "Kerry Patterson",
+      "rating": 4,
+      "dateRead": "2020-08-02"
+    },
+    {
+      "id": "38602142",
+      "title": "Coffee Can Investing: The Low Risk Road to Stupendous Wealth",
+      "author": "Saurabh Mukherjea",
+      "rating": 3,
+      "dateRead": "2020-07-02"
+    },
+    {
+      "id": "84525",
+      "title": "What Got You Here Won't Get You There",
+      "author": "Marshall Goldsmith",
+      "rating": 5,
+      "dateRead": "2020-05-05"
+    },
+    {
+      "id": "38315",
+      "title": "Fooled by Randomness: The Hidden Role of Chance in Life and in the Markets (Incerto)",
+      "author": "Nassim Nicholas Taleb",
+      "rating": 4,
+      "dateRead": "2020-04-11"
+    },
+    {
+      "id": "22337524",
+      "title": "Value Proposition Design: How to Create Products and Services Customers Want",
+      "author": "Alexander Osterwalder",
+      "rating": 3,
+      "dateRead": "2020-02-19"
+    },
+    {
+      "id": "6885191",
+      "title": "Start-up Nation: The Story of Israel's Economic Miracle",
+      "author": "Dan Senor",
+      "rating": 3,
+      "dateRead": "2020-02-06"
+    },
+    {
+      "id": "23848190",
+      "title": "Extreme Ownership: How U.S. Navy SEALs Lead and Win",
+      "author": "Jocko Willink",
+      "rating": 5,
+      "dateRead": "2020-01-23"
+    },
+    {
+      "id": "11040390",
+      "title": "Finance Basics (Collins Business Secrets)",
+      "author": "Stuart Warner",
+      "rating": 0,
+      "dateRead": "2020-01-01"
+    },
+    {
+      "id": "3869",
+      "title": "A Brief History of Time",
+      "author": "Stephen W. Hawking",
+      "rating": 4,
+      "dateRead": null
+    },
+    {
+      "id": "23158207",
+      "title": "How Google Works",
+      "author": "Eric Schmidt",
+      "rating": 4,
+      "dateRead": null
+    },
+    {
+      "id": "51066664",
+      "title": "How to Decide: Simple Tools for Making Better Choices",
+      "author": "Annie Duke",
+      "rating": 0,
+      "dateRead": null
+    },
+    {
+      "id": "4865",
+      "title": "How to Win Friends & Influence People",
+      "author": "Dale Carnegie",
+      "rating": 4,
+      "dateRead": null
+    },
+    {
+      "id": "211099",
+      "title": "Losing My Virginity: How I've Survived, Had Fun, and Made a Fortune Doing Business My Way",
+      "author": "Richard Branson",
+      "rating": 4,
+      "dateRead": null
+    },
+    {
+      "id": "13623874",
+      "title": "Mossad: The Greatest Missions of the Israeli Secret Service",
+      "author": "Michael Bar-Zohar",
+      "rating": 4,
+      "dateRead": null
+    },
+    {
+      "id": "123857637",
+      "title": "Never Split the Difference: Negotiating as if Your Life Depended on It",
+      "author": "Chris Voss",
+      "rating": 5,
+      "dateRead": null
+    },
+    {
+      "id": "3450744",
+      "title": "Nudge: Improving Decisions About Health, Wealth, and Happiness",
+      "author": "Richard H. Thaler",
+      "rating": 2,
+      "dateRead": null
+    },
+    {
+      "id": "69571",
+      "title": "Rich Dad Poor Dad: What the Rich Teach Their Kids About Money—That the Poor and Middle Class Do Not!",
+      "author": "Robert T. Kiyosaki",
+      "rating": 3,
+      "dateRead": null
+    },
+    {
+      "id": "11084145",
+      "title": "Steve Jobs",
+      "author": "Walter Isaacson",
+      "rating": 5,
+      "dateRead": null
+    },
+    {
+      "id": "33121747",
+      "title": "The Barefoot Investor: The Only Money Guide You'll Ever Need",
+      "author": "Scott Pape",
+      "rating": 3,
+      "dateRead": null
+    },
+    {
+      "id": "22103881",
+      "title": "The New One Minute Manager",
+      "author": "Kenneth H. Blanchard",
+      "rating": 4,
+      "dateRead": null
+    },
+    {
+      "id": "52529",
+      "title": "The Secret (The Secret, #1)",
+      "author": "Rhonda Byrne",
+      "rating": 3,
+      "dateRead": null
+    },
+    {
+      "id": "4894",
+      "title": "Who Moved My Cheese?",
+      "author": "Spencer Johnson",
+      "rating": 4,
+      "dateRead": null
+    }
+  ]
+}

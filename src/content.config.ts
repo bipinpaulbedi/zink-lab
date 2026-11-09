@@ -7,7 +7,15 @@ import { SECTIONS, SECTION_IDS } from './site';
 // After changing section keys in site.ts, restart astro dev to reload its content schema.
 // All entries use /<slug>/. These routes and build folders share the same flat URL space.
 // Kebab-case excludes file names such as rss.xml.
-const ROUTES = ['404', 'pagefind', 'recent', 'search', 'series', 'topics'];
+const ROUTES = [
+  '404',
+  'books',
+  'pagefind',
+  'recent',
+  'search',
+  'series',
+  'topics',
+];
 const RESERVED = [...ROUTES, ...Object.values(SECTIONS).map((s) => s.path)];
 // Do not reuse a retired slug. A _redirects rule has priority over a page at the same path.
 const RETIRED =

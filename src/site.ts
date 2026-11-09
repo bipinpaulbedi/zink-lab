@@ -41,6 +41,8 @@ export const SECTION_IDS = Object.keys(SECTIONS) as [Section, ...Section[]];
 /** Portal source location. Entries link to their Git history and discussions here. */
 export const REPO = 'https://github.com/bipinpaulbedi/zink-lab'; // replace before publishing
 export const AUTHOR_NAME = 'Bipin Paul Bedi'; // sole author until an authors collection is added
+export const GOODREADS_PROFILE =
+  'https://www.goodreads.com/user/show/21866367-bipin-bedi';
 
 /** Replace these placeholder URLs with the author's profiles before publishing. */
 export const SOCIAL_PROFILES = {

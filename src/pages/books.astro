@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookCard from '../components/BookCard.astro';
+import shelf from '../data/books.json';
+import { GOODREADS_PROFILE } from '../site';
+const books = shelf.books;
+---
+
+<BaseLayout
+  title="Books"
+  description="A personal bookshelf: books I’ve read, the authors behind them, and my ratings on Goodreads."
+>
+  <header class="page-intro bookshelf__intro">
+    <p class="eyebrow">The reading shelf</p>
+    <h1>
+      Books that stay
+      <br />
+      with me.
+    </h1>
+    <p class="lede">
+      Different voices. New perspectives. A record of the books I’ve read along
+      the way.
+    </p>
+    <a class="text-link" href={GOODREADS_PROFILE}>
+      Find me on Goodreads <span aria-hidden="true">↗</span>
+    </a>
+  </header>
+  <section aria-labelledby="read-books">
+    <div class="section-heading bookshelf__heading">
+      <h2 id="read-books" class="section-heading__title">
+        Read &amp; reflected on
+      </h2>
+      {books.length > 0 && (
+        <p class="bookshelf__summary u-small">
+          {books.length} {books.length === 1 ? 'book' : 'books'}
+          {shelf.updated && (
+            <>
+              {' '}
+              · Updated <time datetime={shelf.updated}>{shelf.updated}</time>
+            </>
+          )}
+        </p>
+      )}
+    </div>
+    {books.length ? (
+      <ul class="bookshelf__grid">
+        {books.map((book, index) => (
+          <BookCard book={book} number={index + 1} />
+        ))}
+      </ul>
+    ) : (
+      <div class="bookshelf__empty">
+        <p class="bookshelf__empty-title">A shelf taking shape.</p>
+        <p>
+          The reading list is on its way. In the meantime, explore my books on
+          Goodreads.
+        </p>
+        <a
+          class="text-link"
+          href="https://www.goodreads.com/review/list/21866367?shelf=read"
+        >
+          Visit my read shelf <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  @import '../styles/layers.css';
+
+  @layer components {
+    .bookshelf__intro {
+      max-width: 52rem;
+    }
+    .bookshelf__heading {
+      border-block-end: 1px solid var(--line);
+      padding-block-end: var(--space-2);
+    }
+    .bookshelf__summary {
+      margin: 0;
+      color: var(--muted);
+    }
+    .bookshelf__grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-5) var(--space-4);
+      list-style: none;
+      padding: 0;
+      margin: var(--space-4) 0;
+    }
+    .bookshelf__empty {
+      padding: var(--space-5);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      max-width: 48rem;
+    }
+    .bookshelf__empty-title {
+      font: 1.75rem/1.2 var(--font-editorial);
+      margin-block-start: 0;
+    }
+    @media (max-width: 850px) {
+      .bookshelf__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 560px) {
+      .bookshelf__grid {
+        grid-template-columns: 1fr;
+      }
+      .bookshelf__empty {
+        padding: var(--space-3);
+      }
+    }
+  }
+</style>

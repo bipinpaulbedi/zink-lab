@@ -62,3 +62,17 @@ Replace the Twitter (X) and LinkedIn placeholder URLs in `SOCIAL_PROFILES` in `s
 Set the GitHub repository variable `SITE_URL` to the confirmed production URL. CI then checks that live sitemap URLs remain built or redirected, and the weekly job checks production headers. Without that variable, local link checks still run and live checks are skipped.
 
 Configure Workers Builds and Cloudflare Access using architecture §9–10. Production excludes drafts. Branch builds use `SHOW_DRAFTS=true` and put `noindex` on every HTML page; verify Access protection before publishing drafts. No deployment was performed as part of implementation. Use the dashboard-managed workflow described in the architecture.
+
+## Bookshelf
+
+`/books/` displays the read books imported from `src/data/goodreads_library_export.csv`, linked from the main navigation. `src/data/books.json` is generated from that CSV when starting development or building. The source profile is `GOODREADS_PROFILE` in `src/site.ts`. The page uses CSS book jackets, personal ratings, and finished dates; it makes no third-party requests and adds no JavaScript.
+
+Goodreads returned 404 for this profile’s shelf RSS endpoint and redirected the public shelf to sign-in when checked on 2026-11-09. Direct synchronization is therefore unavailable. To update the shelf, export your Goodreads library from **My Books → Import and export → Export Library**, replace `src/data/goodreads_library_export.csv`, and run `npm run build` (or restart `npm run dev`). You can also import a new export directly:
+
+```sh
+node scripts/import-books.mjs /path/to/goodreads_library_export.csv
+node scripts/test-books.mjs
+npm run build
+```
+
+Only rows with `Exclusive Shelf` set to `read` are published. The importer keeps the book ID, title, author, personal rating, and finished date, sorted with recent finishes first and undated books last. Reviews and other shelves are excluded. The original CSV is stored in the repository outside `public/` and is not copied into the published site. Commit the replaced CSV and generated JSON together. Unchanged book data preserves the previous updated date. Invalid exports stop the build before replacing the generated bookshelf.
