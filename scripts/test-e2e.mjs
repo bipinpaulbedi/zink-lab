@@ -34,6 +34,15 @@ try {
       '2,A very long book title about understanding systems and following ideas across disciplines,Another Author,read,3,2025/03/01\n' +
       '3,An undated book,A Third Author,read,0,\n',
   );
+  // Exercise a configured single-post embed without publishing fixture content.
+  const sitePath = join(root, 'src/site.ts');
+  writeFileSync(
+    sitePath,
+    readFileSync(sitePath, 'utf8').replace(
+      /export const X_POST_URL: string =\s*'[^']*';/,
+      "export const X_POST_URL: string = 'https://x.com/bipinpaulbedi/status/1234567890';",
+    ),
+  );
   const configPath = join(root, 'astro.config.mjs');
   writeFileSync(
     configPath,

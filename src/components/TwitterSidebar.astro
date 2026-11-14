@@ -1,28 +1,27 @@
 ---
-import { SOCIAL_PROFILES } from '../site';
+import { SOCIAL_PROFILES, X_POST_URL } from '../site';
+import xPostScript from '../scripts/x-post.js?url&no-inline';
 ---
 
 <aside class="twitter-sidebar" aria-labelledby="twitter-sidebar-title">
   <h2 id="twitter-sidebar-title" class="twitter-sidebar__title">
-    Latest on X
+    Post on X
   </h2>
-  <a
-    class="twitter-timeline"
-    href={SOCIAL_PROFILES.twitter}
-    data-tweet-limit="1"
-    data-dnt="true"
-    data-chrome="transparent"
-  >
-    Posts on Twitter (X)
-  </a>
+  {X_POST_URL && (
+    <div data-x-post={X_POST_URL.split('/').pop()}>
+      <blockquote>
+        <a href={X_POST_URL}>Read this post on X</a>
+      </blockquote>
+    </div>
+  )}
   <p class="twitter-sidebar__note u-small">
     <a href={SOCIAL_PROFILES.twitter}>
       View profile on X <span aria-hidden="true">↗</span>
     </a>
-    · Updates on page reload. If the post is unavailable, visit the profile.
+    · If the post is unavailable, visit the profile.
   </p>
 </aside>
-<script is:inline async src="https://platform.twitter.com/widgets.js"></script>
+{X_POST_URL && <script is:inline type="module" src={xPostScript}></script>}
 
 <style>
   @import '../styles/layers.css';
@@ -33,9 +32,13 @@ import { SOCIAL_PROFILES } from '../site';
       padding-block: var(--space-4);
       overflow-wrap: anywhere;
     }
-    /* X inserts the frame after loading; constrain it on narrow screens. */
+    /* X inserts the frame; round its canvas as well as the card inside it. */
     .twitter-sidebar :global(iframe) {
       max-width: 100%;
+      border-radius: 1rem;
+      outline: 1px solid var(--line);
+      outline-offset: -1px;
+      background: var(--surface);
     }
     .twitter-sidebar__title {
       font: 600 1.1rem var(--font-ui);

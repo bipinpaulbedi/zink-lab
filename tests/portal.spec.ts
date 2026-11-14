@@ -33,25 +33,26 @@ const routes = [
 
 // Keep the provider boundary deterministic; do not rely on X availability in CI.
 test.beforeEach(async ({ page }) => {
-  await page.route('https://platform.twitter.com/widgets.js', (route) =>
+  await page.route('https://platform.x.com/widgets.js', (route) =>
     route.fulfill({
       contentType: 'application/javascript',
-      body: `const link = document.querySelector('.twitter-timeline');
-        if (link) {
+      body: `window.twttr = { widgets: {
+        createTweet: async (id, host, options) => {
           const frame = document.createElement('iframe');
-          frame.title = 'X profile timeline';
-          frame.src = 'https://syndication.twitter.com/timeline/profile';
-          link.after(frame);
-        }`,
+          frame.title = 'X embedded post';
+          frame.src = 'https://platform.twitter.com/embed/Tweet.html?' +
+            new URLSearchParams({ id, ...options });
+          host.append(frame);
+          return frame;
+        }
+      }};`,
     }),
   );
-  await page.route(
-    'https://syndication.twitter.com/timeline/profile',
-    (route) =>
-      route.fulfill({
-        contentType: 'text/html',
-        body: '<!doctype html><html lang="en"><title>X timeline fixture</title><body><article aria-label="Post">A post from the configured profile.</article></body></html>',
-      }),
+  await page.route('https://platform.twitter.com/embed/Tweet.html?*', (route) =>
+    route.fulfill({
+      contentType: 'text/html',
+      body: '<!doctype html><html lang="en"><title>X post fixture</title><body><article aria-label="Post">The configured post.</article></body></html>',
+    }),
   );
 });
 
@@ -96,8 +97,8 @@ for (const route of routes) {
       requests.filter(
         (url) =>
           new URL(url).origin !== 'http://localhost:8788' &&
-          url !== 'https://platform.twitter.com/widgets.js' &&
-          url !== 'https://syndication.twitter.com/timeline/profile',
+          url !== 'https://platform.x.com/widgets.js' &&
+          !url.startsWith('https://platform.twitter.com/embed/Tweet.html?'),
       ),
     ).toEqual([]);
     expect(await context.cookies()).toEqual([]);
@@ -126,9 +127,12 @@ for (const route of routes) {
       );
     }
     if (entryPaths.includes(route)) {
-      expect(scripts.filter((s) => s.src).map((s) => s.src)).toEqual([
-        'https://platform.twitter.com/widgets.js',
-      ]);
+      const external = scripts.filter((s) => s.src).map((s) => s.src!);
+      expect(external).toHaveLength(2);
+      expect(external).toContain('https://platform.x.com/widgets.js');
+      expect(
+        external.some((src) => /^\/_astro\/x-post\.[\w-]+\.js$/.test(src)),
+      ).toBe(true);
       expect(
         scripts.reduce((sum, s) => sum + Buffer.byteLength(s.text), 0),
       ).toBeLessThanOrEqual(1536);
@@ -339,31 +343,23 @@ for (const { label, path, entry, title, query } of [
   });
 }
 
-test('X sidebar requests one post and retains a usable fallback', async ({
+test('X sidebar embeds the configured post and retains a usable fallback', async ({
   page,
 }) => {
   await page.goto('/');
-  const sidebar = page.getByRole('complementary', { name: 'Latest on X' });
-  await expect(sidebar.locator('.twitter-timeline')).toHaveAttribute(
-    'data-tweet-limit',
-    '1',
-  );
-  await expect(sidebar.locator('.twitter-timeline')).toHaveAttribute(
-    'data-dnt',
-    'true',
-  );
+  const sidebar = page.getByRole('complementary', { name: 'Post on X' });
+  const post = sidebar.locator('blockquote');
+  await expect(sidebar.locator('.twitter-timeline')).toHaveCount(0);
   const config = readFileSync(join(root, 'src/site.ts'), 'utf8');
   const profile = config.match(/twitter: '([^']+)'/)![1]!;
+  const postUrl = config.match(/X_POST_URL: string =\s*'([^']+)'/)![1]!;
   await expect(
     sidebar.getByRole('link', { name: 'View profile on X' }),
   ).toHaveAttribute('href', profile);
-  await expect(sidebar.locator('.twitter-timeline')).toHaveAttribute(
-    'href',
-    profile,
-  );
+  await expect(post.locator('a')).toHaveAttribute('href', postUrl);
   await expect(sidebar.locator('iframe')).toHaveAttribute(
     'src',
-    'https://syndication.twitter.com/timeline/profile',
+    /https:\/\/platform\.twitter\.com\/embed\/Tweet\.html\?.*dnt=true.*conversation=none/,
   );
   await expect(
     page
@@ -379,16 +375,40 @@ test('X sidebar requests one post and retains a usable fallback', async ({
   ).toBeLessThanOrEqual(390);
 });
 
+test('X post follows selected mode, navigation and system preference', async ({
+  page,
+}) => {
+  const frame = page.locator('[data-x-frame] iframe');
+  await page.goto('/?theme=dark');
+  await expect(frame).toHaveAttribute('src', /[?&]theme=dark(?:&|$)/);
+  await page.getByRole('button', { name: 'Mode' }).click();
+  await expect(frame).toHaveAttribute('src', /[?&]theme=light(?:&|$)/);
+  await expect(frame).toHaveCount(1);
+  await page.goto('/topics/');
+  await expect(frame).toHaveAttribute('src', /[?&]theme=light(?:&|$)/);
+  await page.getByRole('button', { name: 'Mode' }).click();
+  await expect(frame).toHaveAttribute('src', /[?&]theme=dark(?:&|$)/);
+  // An explicit choice remains selected when the system preference changes.
+  await page.emulateMedia({ colorScheme: 'light' });
+  await expect(frame).toHaveAttribute('src', /[?&]theme=dark(?:&|$)/);
+  await page.evaluate(() => localStorage.removeItem('theme'));
+  await page.goto('/');
+  await expect(frame).toHaveAttribute('src', /[?&]theme=light(?:&|$)/);
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await expect(frame).toHaveAttribute('src', /[?&]theme=dark(?:&|$)/);
+  await expect(frame).toHaveCount(1);
+});
+
 test('X sidebar keeps profile links when the provider is blocked', async ({
   page,
 }) => {
-  await page.route('https://platform.twitter.com/widgets.js', (route) =>
+  await page.route('https://platform.x.com/widgets.js', (route) =>
     route.abort(),
   );
   await page.goto('/');
-  const sidebar = page.getByRole('complementary', { name: 'Latest on X' });
+  const sidebar = page.getByRole('complementary', { name: 'Post on X' });
   await expect(
-    sidebar.getByRole('link', { name: 'Posts on Twitter (X)' }),
+    sidebar.getByRole('link', { name: 'Read this post on X' }),
   ).toBeVisible();
   await expect(
     sidebar.getByRole('link', { name: 'View profile on X' }),

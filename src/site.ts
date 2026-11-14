@@ -46,10 +46,13 @@ export const GOODREADS_PROFILE =
 
 /** Replace these placeholder URLs with the author's profiles before publishing. */
 export const SOCIAL_PROFILES = {
-  // Public profile for the one-post live sidebar; change this URL and rebuild.
   twitter: 'https://x.com/bipinpaulbedi',
   linkedin: 'https://www.linkedin.com/in/bipinpaulbedi/',
 } as const;
+
+/** Post shown in the X sidebar. Paste a full /status/ URL and rebuild to update. */
+export const X_POST_URL: string =
+  'https://x.com/BipinPaulBedi/status/2121494447116673459';
 
 export const historyUrl = (id: string) =>
   `${REPO}/commits/main/src/content/portal/${id}/index.md`;

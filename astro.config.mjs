@@ -45,7 +45,11 @@ export default defineConfig({
       scriptDirective: {
         // ADR-11: official X sidebar widget and its dynamically loaded script chunks.
         // Keep 'self': insertScriptResource() on search otherwise removes it.
-        resources: ["'self'", 'https://platform.twitter.com/'],
+        resources: [
+          "'self'",
+          'https://platform.x.com/widgets.js',
+          'https://platform.twitter.com/',
+        ],
         // SHA-256 of the inline script in src/components/ThemeInit.astro. Any CSP violation causes CI failure.
         hashes: ['sha256-WFV5CGAhIjttYr+w3I/IwiROnjgt2MLXBxmNb9oMRwg='],
       },
