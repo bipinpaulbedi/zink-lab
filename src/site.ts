@@ -46,6 +46,7 @@ export const GOODREADS_PROFILE =
 
 /** Replace these placeholder URLs with the author's profiles before publishing. */
 export const SOCIAL_PROFILES = {
+  // Public profile for the one-post live sidebar; change this URL and rebuild.
   twitter: 'https://x.com/bipinpaulbedi',
   linkedin: 'https://www.linkedin.com/in/bipinpaulbedi/',
 } as const;

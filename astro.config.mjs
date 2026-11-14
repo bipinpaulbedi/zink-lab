@@ -35,15 +35,17 @@ export default defineConfig({
         "default-src 'self'",
         "img-src 'self'",
         "font-src 'self'",
-        "connect-src 'self'",
-        'frame-src https://www.youtube-nocookie.com',
+        "connect-src 'self' https://syndication.twitter.com",
+        'frame-src https://www.youtube-nocookie.com https://platform.twitter.com https://syndication.twitter.com',
         "object-src 'none'",
         "base-uri 'self'",
         "form-action 'self'",
         'upgrade-insecure-requests',
       ],
       scriptDirective: {
-        resources: ["'self'"], // Keep this. Otherwise, insertScriptResource() on a page removes it.
+        // ADR-11: official X sidebar widget and its dynamically loaded script chunks.
+        // Keep 'self': insertScriptResource() on search otherwise removes it.
+        resources: ["'self'", 'https://platform.twitter.com/'],
         // SHA-256 of the inline script in src/components/ThemeInit.astro. Any CSP violation causes CI failure.
         hashes: ['sha256-WFV5CGAhIjttYr+w3I/IwiROnjgt2MLXBxmNb9oMRwg='],
       },

@@ -31,6 +31,30 @@ const routes = [
   '/missing-entry/',
 ];
 
+// Keep the provider boundary deterministic; do not rely on X availability in CI.
+test.beforeEach(async ({ page }) => {
+  await page.route('https://platform.twitter.com/widgets.js', (route) =>
+    route.fulfill({
+      contentType: 'application/javascript',
+      body: `const link = document.querySelector('.twitter-timeline');
+        if (link) {
+          const frame = document.createElement('iframe');
+          frame.title = 'X profile timeline';
+          frame.src = 'https://syndication.twitter.com/timeline/profile';
+          link.after(frame);
+        }`,
+    }),
+  );
+  await page.route(
+    'https://syndication.twitter.com/timeline/profile',
+    (route) =>
+      route.fulfill({
+        contentType: 'text/html',
+        body: '<!doctype html><html lang="en"><title>X timeline fixture</title><body><article aria-label="Post">A post from the configured profile.</article></body></html>',
+      }),
+  );
+});
+
 for (const route of routes) {
   test(`${route} accessibility, privacy, security and budgets`, async ({
     page,
@@ -69,7 +93,12 @@ for (const route of routes) {
       .analyze();
     expect(results.violations).toEqual([]);
     expect(
-      requests.filter((url) => new URL(url).origin !== 'http://localhost:8788'),
+      requests.filter(
+        (url) =>
+          new URL(url).origin !== 'http://localhost:8788' &&
+          url !== 'https://platform.twitter.com/widgets.js' &&
+          url !== 'https://syndication.twitter.com/timeline/profile',
+      ),
     ).toEqual([]);
     expect(await context.cookies()).toEqual([]);
     expect(
@@ -97,7 +126,9 @@ for (const route of routes) {
       );
     }
     if (entryPaths.includes(route)) {
-      expect(scripts.filter((s) => s.src)).toEqual([]);
+      expect(scripts.filter((s) => s.src).map((s) => s.src)).toEqual([
+        'https://platform.twitter.com/widgets.js',
+      ]);
       expect(
         scripts.reduce((sum, s) => sum + Buffer.byteLength(s.text), 0),
       ).toBeLessThanOrEqual(1536);
@@ -134,6 +165,10 @@ test('bookshelf navigation, personal ratings and optional dates', async ({
   await page.goto('/');
   const preview = page.getByRole('region', { name: 'From the bookshelf' });
   await expect(preview.locator('.book')).toHaveCount(3);
+  await expect(page.locator('main .reading-preview')).toHaveCount(0);
+  await expect(
+    page.locator('.site-body__sidebar .reading-preview'),
+  ).toHaveCount(1);
   await expect(
     preview.getByRole('link', { name: 'View all 3 books' }),
   ).toHaveAttribute('href', '/books/');
@@ -156,6 +191,16 @@ test('bookshelf navigation, personal ratings and optional dates', async ({
     await page.goto(route);
     for (const width of [1440, 851, 768, 561, 320]) {
       await page.setViewportSize({ width, height: 900 });
+      if (route === '/') {
+        const sidebar = (await page
+          .locator('.site-body__sidebar')
+          .boundingBox())!;
+        const preview = (await page.locator('.reading-preview').boundingBox())!;
+        expect(preview.x).toBeGreaterThanOrEqual(sidebar.x);
+        expect(preview.x + preview.width).toBeLessThanOrEqual(
+          sidebar.x + sidebar.width + 1,
+        );
+      }
       const cards = await page.locator('.book__cover').evaluateAll((covers) =>
         covers.map((cover) => {
           const bounds = cover.getBoundingClientRect();
@@ -294,6 +339,63 @@ for (const { label, path, entry, title, query } of [
   });
 }
 
+test('X sidebar requests one post and retains a usable fallback', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const sidebar = page.getByRole('complementary', { name: 'Latest on X' });
+  await expect(sidebar.locator('.twitter-timeline')).toHaveAttribute(
+    'data-tweet-limit',
+    '1',
+  );
+  await expect(sidebar.locator('.twitter-timeline')).toHaveAttribute(
+    'data-dnt',
+    'true',
+  );
+  const config = readFileSync(join(root, 'src/site.ts'), 'utf8');
+  const profile = config.match(/twitter: '([^']+)'/)![1]!;
+  await expect(
+    sidebar.getByRole('link', { name: 'View profile on X' }),
+  ).toHaveAttribute('href', profile);
+  await expect(sidebar.locator('.twitter-timeline')).toHaveAttribute(
+    'href',
+    profile,
+  );
+  await expect(sidebar.locator('iframe')).toHaveAttribute(
+    'src',
+    'https://syndication.twitter.com/timeline/profile',
+  );
+  await expect(
+    page
+      .getByRole('navigation', { name: 'Footer', exact: true })
+      .getByRole('link', { name: /Twitter/ }),
+  ).toHaveCount(0);
+  await page.setViewportSize({ width: 390, height: 844 });
+  const main = (await page.locator('main').boundingBox())!;
+  const aside = (await sidebar.boundingBox())!;
+  expect(aside.y).toBeGreaterThanOrEqual(main.y + main.height);
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+  ).toBeLessThanOrEqual(390);
+});
+
+test('X sidebar keeps profile links when the provider is blocked', async ({
+  page,
+}) => {
+  await page.route('https://platform.twitter.com/widgets.js', (route) =>
+    route.abort(),
+  );
+  await page.goto('/');
+  const sidebar = page.getByRole('complementary', { name: 'Latest on X' });
+  await expect(
+    sidebar.getByRole('link', { name: 'Posts on Twitter (X)' }),
+  ).toBeVisible();
+  await expect(
+    sidebar.getByRole('link', { name: 'View profile on X' }),
+  ).toBeVisible();
+  await expect(sidebar.locator('iframe')).toHaveCount(0);
+});
+
 test('copy code and activate video only on request', async ({ page }) => {
   await page.addInitScript(() =>
     Object.defineProperty(navigator, 'clipboard', {
@@ -310,7 +412,9 @@ test('copy code and activate video only on request', async ({ page }) => {
   expect(
     await page.evaluate(() => (window as unknown as { copied: string }).copied),
   ).toContain("output: 'static'");
-  await expect(page.locator('iframe')).toHaveCount(0);
+  await expect(
+    page.locator('iframe[src^="https://www.youtube-nocookie.com/"]'),
+  ).toHaveCount(0);
   // Block the remote player after observing its activation URL; third-party playback is outside the privacy guarantee.
   let activated = false;
   await page.route('https://www.youtube-nocookie.com/**', (route) => {
@@ -321,10 +425,9 @@ test('copy code and activate video only on request', async ({ page }) => {
     });
   });
   await page.getByRole('button', { name: /Play video/ }).click();
-  await expect(page.locator('iframe')).toHaveAttribute(
-    'src',
-    /^https:\/\/www.youtube-nocookie.com\/embed\//,
-  );
+  await expect(
+    page.locator('iframe[src^="https://www.youtube-nocookie.com/"]'),
+  ).toHaveAttribute('src', /^https:\/\/www.youtube-nocookie.com\/embed\//);
   await expect.poll(() => activated).toBe(true);
 });
 

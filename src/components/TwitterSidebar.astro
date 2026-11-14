@@ -1,0 +1,49 @@
+---
+import { SOCIAL_PROFILES } from '../site';
+---
+
+<aside class="twitter-sidebar" aria-labelledby="twitter-sidebar-title">
+  <h2 id="twitter-sidebar-title" class="twitter-sidebar__title">
+    Latest on X
+  </h2>
+  <a
+    class="twitter-timeline"
+    href={SOCIAL_PROFILES.twitter}
+    data-tweet-limit="1"
+    data-dnt="true"
+    data-chrome="transparent"
+  >
+    Posts on Twitter (X)
+  </a>
+  <p class="twitter-sidebar__note u-small">
+    <a href={SOCIAL_PROFILES.twitter}>
+      View profile on X <span aria-hidden="true">↗</span>
+    </a>
+    · Updates on page reload. If the post is unavailable, visit the profile.
+  </p>
+</aside>
+<script is:inline async src="https://platform.twitter.com/widgets.js"></script>
+
+<style>
+  @import '../styles/layers.css';
+
+  @layer components {
+    .twitter-sidebar {
+      min-width: 0;
+      padding-block: var(--space-4);
+      overflow-wrap: anywhere;
+    }
+    /* X inserts the frame after loading; constrain it on narrow screens. */
+    .twitter-sidebar :global(iframe) {
+      max-width: 100%;
+    }
+    .twitter-sidebar__title {
+      font: 600 1.1rem var(--font-ui);
+      margin-block: 0 var(--space-2);
+    }
+    .twitter-sidebar__note {
+      color: var(--muted);
+      margin-block: var(--space-2) 0;
+    }
+  }
+</style>

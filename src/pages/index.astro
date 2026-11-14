@@ -139,26 +139,6 @@ const evergreens = portal
       </p>
     )}
   </section>
-  {shelf.books.length > 0 && (
-    <section aria-labelledby="home-bookshelf">
-      <div class="section-heading">
-        <h2 class="section-heading__title" id="home-bookshelf">
-          From the bookshelf
-        </h2>
-        <a class="section-heading__link" href="/books/">
-          View all {shelf.books.length} books <span aria-hidden="true">→</span>
-        </a>
-      </div>
-      <p class="reading-preview__description">
-        A few books I’ve read along the way. Different voices, new perspectives.
-      </p>
-      <ul class="reading-preview__grid">
-        {shelf.books.slice(0, 3).map((book, index) => (
-          <BookCard book={book} number={index + 1} />
-        ))}
-      </ul>
-    </section>
-  )}
   {evergreens.length > 0 && (
     <section>
       <div class="section-heading">
@@ -172,7 +152,7 @@ const evergreens = portal
       </div>
     </section>
   )}
-  <aside class="growth-note">
+  <aside class="growth-note" aria-label="About growth stages">
     <h2 class="growth-note__title">A journey of continuous discovery.</h2>
     <p class="growth-note__description">
       Every entry shows where it stands: <strong>abstract</strong> for a first
@@ -184,6 +164,30 @@ const evergreens = portal
       Follow new entries with RSS →
     </a>
   </aside>
+  <Fragment slot="sidebar">
+    {shelf.books.length > 0 && (
+      <section class="reading-preview" aria-labelledby="home-bookshelf">
+        <div class="reading-preview__heading">
+          <h2 class="reading-preview__title" id="home-bookshelf">
+            From the bookshelf
+          </h2>
+          <a class="section-heading__link" href="/books/">
+            View all {shelf.books.length} books{' '}
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <p class="reading-preview__description">
+          A few books I’ve read along the way. Different voices, new
+          perspectives.
+        </p>
+        <ul class="reading-preview__grid">
+          {shelf.books.slice(0, 3).map((book, index) => (
+            <BookCard book={book} number={index + 1} />
+          ))}
+        </ul>
+      </section>
+    )}
+  </Fragment>
 </BaseLayout>
 
 <style>
@@ -310,13 +314,26 @@ const evergreens = portal
       font: 0.75rem/2 var(--font-ui);
       color: var(--muted);
     }
+    .reading-preview {
+      border-block-start: 1px solid var(--line);
+      padding-block: var(--space-4);
+    }
+    .reading-preview__heading {
+      display: grid;
+      gap: var(--space-1);
+      margin-block-end: var(--space-2);
+    }
+    .reading-preview__title {
+      font: 600 1.1rem var(--font-ui);
+      margin: 0;
+    }
     .reading-preview__description {
       color: var(--muted);
       margin-block: 0 var(--space-4);
     }
     .reading-preview__grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--space-4);
       list-style: none;
       padding: 0;
@@ -344,8 +361,7 @@ const evergreens = portal
       --grid-gap: 1.5rem;
     }
     @media (max-width: 850px) {
-      .section-grid,
-      .reading-preview__grid {
+      .section-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .l-entry-grid--home {
@@ -367,7 +383,6 @@ const evergreens = portal
         padding-block-start: var(--space-5);
       }
       .section-grid,
-      .reading-preview__grid,
       .topic-band {
         grid-template-columns: 1fr;
       }

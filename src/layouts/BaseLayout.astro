@@ -1,6 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import TwitterSidebar from '../components/TwitterSidebar.astro';
 import { SECTIONS, SOCIAL_PROFILES } from '../site';
 import '../styles/global.css';
 interface Props {
@@ -18,6 +19,8 @@ const path = Astro.url.pathname;
 <html lang="en">
   <head>
     <BaseHead {...Astro.props} />
+    <meta name="twitter:widgets:csp" content="on" />
+    <meta name="twitter:dnt" content="on" />
     <slot name="head" />
   </head>
   <body>
@@ -82,9 +85,15 @@ const path = Astro.url.pathname;
         </ul>
       </nav>
     </header>
-    <main id="main" class="l-main l-shell" tabindex="-1">
-      <slot />
-    </main>
+    <div class="site-body l-shell">
+      <main id="main" class="l-main site-body__main" tabindex="-1">
+        <slot />
+      </main>
+      <div class="site-body__sidebar">
+        <TwitterSidebar />
+        <slot name="sidebar" />
+      </div>
+    </div>
     <footer class="site-footer l-shell">
       <p class="site-footer__identity">
         <strong>Bipin Paul Bedi.</strong> thoughts, stories and ideas; in
@@ -100,27 +109,6 @@ const path = Astro.url.pathname;
           </li>
           <li>
             <a href="/topics/">Topic map</a>
-          </li>
-          <li>
-            <a
-              class="site-footer__social"
-              href={SOCIAL_PROFILES.twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter (X) profile (opens in a new tab)"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.835L0 1.154h7.594l5.243 6.932 6.064-6.933Zm-1.29 19.49h2.039L6.487 3.24H4.3l13.31 17.403Z"></path>
-              </svg>
-              Twitter (X) <span aria-hidden="true">↗</span>
-            </a>
           </li>
           <li>
             <a
@@ -154,6 +142,21 @@ const path = Astro.url.pathname;
   @import '../styles/layers.css';
 
   @layer components {
+    .site-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: var(--space-4);
+    }
+    .site-body__main,
+    .site-body__sidebar {
+      min-width: 0;
+    }
+    @media (max-width: 850px) {
+      .site-body {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+      }
+    }
     .site-header__masthead {
       display: flex;
       align-items: center;
