@@ -52,7 +52,7 @@ export const SOCIAL_PROFILES = {
 
 /** Post shown in the X sidebar. Paste a full /status/ URL and rebuild to update. */
 export const X_POST_URL: string =
-  'https://x.com/BipinPaulBedi/status/2121494447116673459';
+  'https://x.com/BipinPaulBedi/status/2122128856937377960';
 
 export const historyUrl = (id: string) =>
   `${REPO}/commits/main/src/content/portal/${id}/index.md`;

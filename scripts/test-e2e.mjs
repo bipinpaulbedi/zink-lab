@@ -40,7 +40,7 @@ try {
     sitePath,
     readFileSync(sitePath, 'utf8').replace(
       /export const X_POST_URL: string =\s*'[^']*';/,
-      "export const X_POST_URL: string = 'https://x.com/bipinpaulbedi/status/1234567890';",
+      "export const X_POST_URL: string = 'https://x.com/bipinpaulbedi/status/2122128856937377960';",
     ),
   );
   const configPath = join(root, 'astro.config.mjs');
